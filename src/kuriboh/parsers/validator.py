@@ -1,0 +1,1 @@
+# Validates user YAML files (e.g., using Pydantic)

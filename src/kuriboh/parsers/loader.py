@@ -1,0 +1,1 @@
+# Auto-discovers and loads YAML files from /catalogs, /schemas, /providers

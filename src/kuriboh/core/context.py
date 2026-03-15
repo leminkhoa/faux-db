@@ -1,0 +1,1 @@
+# Stores state, cache (for bind_to), and generated data (for $ref)

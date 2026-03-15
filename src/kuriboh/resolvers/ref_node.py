@@ -1,0 +1,1 @@
+# Handles the "$ref" type for cross-references

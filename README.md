@@ -1,0 +1,97 @@
+# Kuriboh Faker
+
+Kuriboh Faker is a configuration-driven data generation library that leverages the power of `faker` to create realistic datasets based on YAML definitions. It's designed with a strong emphasis on separation of concerns, allowing for highly modular and reusable data generation components.
+
+## Features
+
+-   **Declarative:** Define your data schemas in simple, human-readable YAML.
+-   **Extensible:** Create custom data catalogs and provider logic for any domain.
+-   **Separation of Concerns:** Keep your table schemas, generation logic, and custom data neatly organized.
+-   **Relationship Management:** (Future Goal) Define and generate data with relationships between different tables.
+
+## Project Structure
+
+The project is organized into several key directories:
+
+-   `catalogs/`, `providers/`, `schemas/`, `seeds/`: These directories contain the user-defined YAML configurations and data files.
+-   `src/kuriboh/`: Contains the core Python source code for the library, which is broken down into:
+    -   `cli.py`: Entrypoint for the command-line interface.
+    -   `core/`: The brain of the system, containing the main generation `engine`, `dag` for dependency resolution, and `context` for state management.
+    -   `parsers/`: Handles loading and validating all the user's YAML configuration files.
+    -   `resolvers/`: Contains the logic for processing different types of data generation nodes (e.g., `$faker`, `$ref`, `$expression`).
+    -   `providers/`: Manages the registration and execution of custom data providers.
+    -   `sinks/`: Handles writing the generated data to different output formats (CSV, JSON, SQL, etc.).
+
+## Installation
+
+```bash
+pip install .
+```
+
+## Usage
+
+This library is designed to be used as a command-line tool.
+
+```bash
+# Install dependencies (you might need to install click)
+pip install click
+
+# Run the data generator
+python main.py generate schemas/products.yml
+```
+
+This will use the logic defined in the `src/kuriboh` package to:
+1.  Parse the `schemas/products.yml` file.
+2.  Resolve the dependencies between tables.
+3.  Generate the data column by column using the specified resolvers.
+4.  (Future) Output the data to a specified sink.
+
+## Configuration Example
+
+### `catalogs/furniture.yml`
+
+```yaml
+items:
+  - "Sofa"
+  - "Chair"
+  - "Table"
+  - "Bed"
+  - "Bookshelf"
+```
+
+### `providers/ecommerce.yml`
+
+```yaml
+product_name:
+  provider: "faker.word" # Uses the 'word' method from the faker library
+  # Or a more complex example referencing a catalog
+  # furniture_name:
+  #   provider: "$catalog.furniture.items"
+
+product_price:
+  provider: "faker.pydecimal"
+  params:
+    left_digits: 3
+    right_digits: 2
+    positive: true
+```
+
+### `schemas/products.yml`
+
+```yaml
+products:
+  - name: "product_name"
+    provider: "ecommerce.product_name"
+  - name: "price"
+    provider: "ecommerce.product_price"
+  - name: "company"
+    provider: "seeds.real_companies.name" # Example of using a seed file
+```
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a pull request.
+
+## License
+
+This project is licensed under the MIT License.

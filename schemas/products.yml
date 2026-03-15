@@ -1,0 +1,30 @@
+# schemas/products.yml
+products:
+  rows: 100
+  columns:
+    id:
+      type: "$faker"
+      method: "uuid4"
+      
+    name:
+      type: "$provider"
+      target: "FurnitureNameProvider"
+      
+    price:
+      type: "$provider"
+      target: "FurniturePriceProvider"
+      bind_to: "this.name"
+
+    stock_quantity:
+      type: "$faker"
+      method: "random_int"
+      params:
+        min: 10
+        max: 500
+
+    created_at:
+      type: "$faker"
+      method: "date_between"
+      params:
+        start_date: "-1y"
+        end_date: "today"

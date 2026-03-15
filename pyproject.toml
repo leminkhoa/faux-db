@@ -1,0 +1,11 @@
+[project]
+name = "kuriboh-faker"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "faker==40.11.0",
+    "pyyaml==6.0.3",
+    "pydantic==2.12.5"
+]

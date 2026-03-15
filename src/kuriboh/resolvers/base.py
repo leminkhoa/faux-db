@@ -1,0 +1,1 @@
+# BaseResolver class

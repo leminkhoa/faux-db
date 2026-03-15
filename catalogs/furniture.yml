@@ -1,0 +1,41 @@
+furniture:
+  - Sofa
+  - Armchair
+  - Coffee Table
+  - Dining Table
+  - Bookshelf
+  - Desk
+  - Bed
+  - Dresser
+  - Nightstand
+  - Wardrobe
+
+material:
+  - Steel
+  - Wooden
+  - Plastic
+  - Cotton
+  - Soft
+  - Fresh
+
+color:
+  - Red
+  - Yellow
+  - Blue
+  - Green
+  - Black
+
+adjective:
+  - Small
+  - Ergonomic
+  - Rustic
+  - Intelligent
+  - Gorgeous
+  - Incredible
+  - Fantastic
+  - Practical
+  - Sleek
+  - Awesome
+  - Generic
+  - Handcrafted
+  - Handmade
