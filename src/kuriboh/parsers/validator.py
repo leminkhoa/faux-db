@@ -4,23 +4,26 @@ from typing import Any, Dict, Literal, Mapping
 
 from pydantic import BaseModel, Field, RootModel, ValidationError, model_validator
 
+from ..core import COLUMN_GEN_TYPE__FAKER, COLUMN_GEN_TYPE__PROVIDER, COLUMN_GEN_TYPE__REL
+from ..core import ColumnGenType, RelStrategy
+
 
 class ColumnConfig(BaseModel):
-    type: Literal["$faker", "$provider", "$rel"]
+    type: ColumnGenType
     method: str | None = None
     target: str | None = None
     params: Dict[str, Any] | None = None
     bind_to: str | None = None
-    strategy: Literal["random", "sequential"] = "random"
+    strategy: RelStrategy = "random"
     unique: bool = False
 
     @model_validator(mode="after")
     def check_required_fields(self) -> "ColumnConfig":
-        if self.type == "$faker" and not self.method:
+        if self.type == COLUMN_GEN_TYPE__FAKER and not self.method:
             raise ValueError("Faker column must define 'method'")
-        if self.type == "$provider" and not self.target:
+        if self.type == COLUMN_GEN_TYPE__PROVIDER and not self.target:
             raise ValueError("Provider column must define 'target'")
-        if self.type == "$rel":
+        if self.type == COLUMN_GEN_TYPE__REL:
             if not self.target or "." not in self.target:
                 raise ValueError("Rel column must define 'target' as '<table>.<column>'")
         return self
