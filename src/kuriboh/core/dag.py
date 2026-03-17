@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Dict, List
 
-from ..parsers.validator import ColumnConfig
+from ..parsers.validator import ColumnConfig, SchemaFile
 
 
 def get_bind_to_col(col_cfg: ColumnConfig) -> str | None:
@@ -52,5 +52,51 @@ def build_dag(columns_cfg: Dict[str, ColumnConfig]) -> List[str]:
     if len(order) != len(all_cols):
         cycle_cols = [c for c in all_cols if c not in order]
         raise ValueError(f"Circular dependency detected among columns: {cycle_cols}")
+
+    return order
+
+
+def build_table_dag(schemas: Dict[str, SchemaFile]) -> List[str]:
+    """
+    Build a table-level dependency graph from $rel targets and return
+    table names in generation order (Kahn's algorithm).
+
+    If table B has a column with $rel target "A.id", then A must be
+    generated before B. Raises ValueError on unknown table references
+    or circular dependencies.
+    """
+    all_tables = list(schemas.keys())
+    adjacency: Dict[str, List[str]] = {t: [] for t in all_tables}
+    in_degree: Dict[str, int] = {t: 0 for t in all_tables}
+
+    for table_name, schema_file in schemas.items():
+        for col_cfg in schema_file.table.columns.values():
+            if col_cfg.type != "$rel" or not col_cfg.target:
+                continue
+            ref_table = col_cfg.target.split(".", 1)[0]
+            if ref_table not in schemas:
+                raise ValueError(
+                    f"Table '{table_name}' has $rel target '{col_cfg.target}' "
+                    f"but table '{ref_table}' is not in the domain"
+                )
+            if ref_table == table_name:
+                continue
+            adjacency[ref_table].append(table_name)
+            in_degree[table_name] += 1
+
+    queue: List[str] = [t for t in all_tables if in_degree[t] == 0]
+    order: List[str] = []
+
+    while queue:
+        t = queue.pop(0)
+        order.append(t)
+        for dependent in adjacency[t]:
+            in_degree[dependent] -= 1
+            if in_degree[dependent] == 0:
+                queue.append(dependent)
+
+    if len(order) != len(all_tables):
+        cycle_tables = [t for t in all_tables if t not in order]
+        raise ValueError(f"Circular dependency detected among tables: {cycle_tables}")
 
     return order

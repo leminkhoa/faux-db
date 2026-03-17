@@ -1,0 +1,3 @@
+COLUMN_GEN_TYPE__FAKER = "$faker"
+COLUMN_GEN_TYPE__PROVIDER = "$provider"
+COLUMN_GEN_TYPE__REL = "$rel"
