@@ -3,8 +3,18 @@ orders:
   rows: 100
   columns:
     order_id:
+      type: "$faker"
+      method: "uuid4"
+      unique: true
+
+    product_id:
       type: "$rel"
       target: "products.id"
+      strategy: random
+
+    customer_id:
+      type: "$rel"
+      target: "customers.id"
       strategy: random
 
     date_ordered:
