@@ -15,8 +15,10 @@ CompanyProvider:
 FurnitureNameProvider:
   type: "template_choice"
   templates:
-    - "{{ $catalog('furniture.material') | random }} {{ $catalog('furniture.furniture') | random }}"
+    - "{{ catalog('furniture.material') | random }} {{ catalog('furniture.furniture') | random }}"
+    - "{{ catalog('furniture.color') | random }} @@@ {{ catalog('furniture.furniture') | random }}"
+
 
 FurniturePriceProvider:
   type: "expression"
-  exp: "{{ $faker.random_int(10, 500) }}"
+  exp: "{{ faker.random_int(10, 500) }}"

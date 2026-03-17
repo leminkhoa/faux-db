@@ -1,6 +1,6 @@
 # schemas/products.yml
 products:
-  rows: 100
+  rows: 200
   columns:
     id:
       type: "$faker"
@@ -13,7 +13,7 @@ products:
     price:
       type: "$provider"
       target: "FurniturePriceProvider"
-      bind_to: "this.name"
+      bind_to: name
 
     stock_quantity:
       type: "$faker"
@@ -28,3 +28,6 @@ products:
       params:
         start_date: "-1y"
         end_date: "today"
+  output:
+    format: csv
+    filepath: "./outputs/products.csv"
