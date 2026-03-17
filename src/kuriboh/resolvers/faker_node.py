@@ -17,9 +17,16 @@ class FakerResolver(BaseResolver):
         method: str,
         params: Dict[str, Any] | None = None,
         bind_to_col: str | None = None,
+        unique: bool = False,
+        pk_cache_key: str | None = None,
     ):
         # cache_key: "faker.<method>" keeps it unique and descriptive in the cache
-        super().__init__(bind_to_col=bind_to_col, cache_key=f"faker.{method}")
+        super().__init__(
+            bind_to_col=bind_to_col,
+            cache_key=f"faker.{method}",
+            unique=unique,
+            pk_cache_key=pk_cache_key,
+        )
         self._faker = faker_instance
         self._method = method
         self._params = params or {}

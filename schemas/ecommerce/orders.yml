@@ -1,0 +1,18 @@
+# schemas/ecommerce/orders.yml
+orders:
+  rows: 100
+  columns:
+    order_id:
+      type: "$rel"
+      target: "products.id"
+      strategy: random
+
+    date_ordered:
+      type: "$faker"
+      method: "date_between"
+      params:
+        start_date: "-1w"
+        end_date: "today"
+  output:
+    format: csv
+    filepath: "./outputs/orders.csv"

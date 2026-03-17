@@ -5,10 +5,12 @@ products:
     id:
       type: "$faker"
       method: "uuid4"
+      unique: True
       
     name:
       type: "$provider"
       target: "FurnitureNameProvider"
+      bind_to: id
       
     price:
       type: "$provider"

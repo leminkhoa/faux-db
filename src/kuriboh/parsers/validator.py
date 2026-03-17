@@ -6,11 +6,13 @@ from pydantic import BaseModel, Field, RootModel, ValidationError, model_validat
 
 
 class ColumnConfig(BaseModel):
-    type: Literal["$faker", "$provider"]
+    type: Literal["$faker", "$provider", "$rel"]
     method: str | None = None
     target: str | None = None
     params: Dict[str, Any] | None = None
     bind_to: str | None = None
+    strategy: Literal["random", "sequential"] = "random"
+    unique: bool = False
 
     @model_validator(mode="after")
     def check_required_fields(self) -> "ColumnConfig":
@@ -18,6 +20,9 @@ class ColumnConfig(BaseModel):
             raise ValueError("Faker column must define 'method'")
         if self.type == "$provider" and not self.target:
             raise ValueError("Provider column must define 'target'")
+        if self.type == "$rel":
+            if not self.target or "." not in self.target:
+                raise ValueError("Rel column must define 'target' as '<table>.<column>'")
         return self
 
 

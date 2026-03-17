@@ -2,12 +2,12 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Kuriboh: generate schemas/products.yml",
+            "name": "Kuriboh: generate schemas/ecommerce",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/main.py",
             "console": "integratedTerminal",
-            "args": ["generate", "schemas/products.yml"],
+            "args": ["generate", "schemas/ecommerce"],
             "cwd": "${workspaceFolder}"
         }
     ]
