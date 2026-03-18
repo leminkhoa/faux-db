@@ -1,3 +1,4 @@
+# schemas/ecommerce/orders_items.yml
 order_items:
   rows: 300
   columns:
