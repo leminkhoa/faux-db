@@ -6,4 +6,5 @@ CATALOGS_DIRNAME = "catalogs"
 SCHEMAS_DIRNAME = "schemas"
 SEEDS_DIRNAME = "seeds"
 OUTPUTS_DIRNAME = "outputs"
+FUNCTIONS_DIRNAME = "functions"
 

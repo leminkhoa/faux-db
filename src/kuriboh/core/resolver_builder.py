@@ -8,10 +8,25 @@ from ..parsers.validator import ColumnConfig
 from ..providers.registry import ProviderRegistry
 from ..resolvers.base import BaseResolver
 from ..resolvers.faker_node import FakerResolver
+from ..resolvers.func_node import FuncResolver
 from ..resolvers.provider_node import ProviderResolver
 from ..resolvers.rel_node import RelResolver
-from . import COLUMN_GEN_TYPE__FAKER, COLUMN_GEN_TYPE__PROVIDER, COLUMN_GEN_TYPE__REL
+from . import (
+    COLUMN_GEN_TYPE__FAKER,
+    COLUMN_GEN_TYPE__FUNC,
+    COLUMN_GEN_TYPE__PROVIDER,
+    COLUMN_GEN_TYPE__REL,
+    FUNCTIONS_DIRNAME,
+)
 from .dag import get_bind_to_col
+
+
+def _resolve_func_path(user_func: str) -> str:
+    """Prepend default functions package if user did not specify it."""
+    prefix = f"{FUNCTIONS_DIRNAME}."
+    if user_func.startswith(prefix):
+        return user_func
+    return f"{prefix}{user_func}"
 
 
 def compute_effective_unique(columns_cfg: Dict[str, ColumnConfig]) -> Dict[str, bool]:
@@ -72,6 +87,15 @@ def build_resolvers(
             target = col_cfg.target or ""
             ref_table, ref_column = target.split(".", 1)
             resolvers[col_name] = RelResolver(ref_table, ref_column, col_cfg.strategy)
+        elif col_type == COLUMN_GEN_TYPE__FUNC:
+            func_path = _resolve_func_path(col_cfg.func or "")
+            resolvers[col_name] = FuncResolver(
+                func_path,
+                params=col_cfg.params or {},
+                bind_to_col=bind_to_col,
+                unique=is_unique,
+                pk_cache_key=pk_cache_key,
+            )
         else:
             raise ValueError(f"Unsupported column type: {col_type}")
 
