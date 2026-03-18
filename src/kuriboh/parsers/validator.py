@@ -4,7 +4,12 @@ from typing import Any, Dict, Literal, Mapping
 
 from pydantic import BaseModel, Field, RootModel, ValidationError, model_validator
 
-from ..core import COLUMN_GEN_TYPE__FAKER, COLUMN_GEN_TYPE__PROVIDER, COLUMN_GEN_TYPE__REL
+from ..core import (
+    COLUMN_GEN_TYPE__FAKER,
+    COLUMN_GEN_TYPE__FUNC,
+    COLUMN_GEN_TYPE__PROVIDER,
+    COLUMN_GEN_TYPE__REL,
+)
 from ..core import ColumnGenType, RelStrategy
 
 
@@ -12,6 +17,7 @@ class ColumnConfig(BaseModel):
     type: ColumnGenType
     method: str | None = None
     target: str | None = None
+    func: str | None = None
     params: Dict[str, Any] | None = None
     bind_to: str | None = None
     strategy: RelStrategy = "random"
@@ -26,6 +32,11 @@ class ColumnConfig(BaseModel):
         if self.type == COLUMN_GEN_TYPE__REL:
             if not self.target or "." not in self.target:
                 raise ValueError("Rel column must define 'target' as '<table>.<column>'")
+        if self.type == COLUMN_GEN_TYPE__FUNC:
+            if not self.func or "." not in self.func:
+                raise ValueError(
+                    "Func column must define 'func' as format: '<module>.<callable>' (e.g. 'ecommerce.generate_profile')"
+                )
         return self
 
 

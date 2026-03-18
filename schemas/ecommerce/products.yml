@@ -30,6 +30,12 @@ products:
       params:
         start_date: "-1y"
         end_date: "today"
+    
+    test:
+      type: "$func"
+      func: "test.country_of_origin"
+      params:
+        full_name: False
   output:
     format: csv
     filepath: "./outputs/products.csv"
