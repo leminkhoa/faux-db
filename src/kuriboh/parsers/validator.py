@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Any, Dict, Literal, Mapping
+import re
+from typing import Any, Dict, List, Literal, Mapping
 
 from pydantic import BaseModel, Field, RootModel, ValidationError, model_validator
 
@@ -11,6 +12,20 @@ from ..core import (
     COLUMN_GEN_TYPE__REL,
 )
 from ..core import ColumnGenType, RelStrategy
+
+# Matches $col(column_name) in param string values.
+# Shared with dag.py (for DAG edge extraction) and func_node.py (for runtime resolution).
+COL_REF_PATTERN = re.compile(r"\$col\((\w+)\)")
+
+
+def get_col_refs(col_cfg: "ColumnConfig") -> List[str]:
+    """Return all column names referenced via $col(...) in this column's params."""
+    return [
+        m
+        for v in (col_cfg.params or {}).values()
+        if isinstance(v, str)
+        for m in COL_REF_PATTERN.findall(v)
+    ]
 
 
 class ColumnConfig(BaseModel):
@@ -35,7 +50,8 @@ class ColumnConfig(BaseModel):
         if self.type == COLUMN_GEN_TYPE__FUNC:
             if not self.func or "." not in self.func:
                 raise ValueError(
-                    "Func column must define 'func' as format: '<module>.<callable>' (e.g. 'ecommerce.generate_profile')"
+                    "Func column must define 'func' as '<module>.<callable>' "
+                    "(e.g. 'test.country_of_origin')"
                 )
         return self
 
@@ -67,10 +83,25 @@ class SchemaFile(RootModel[Dict[str, TableSchema]]):
 
 def validate_schema(schema: Mapping[str, Any]) -> SchemaFile:
     """
-    Validate a raw YAML-loaded schema using Pydantic and return a typed model.
+    Validate a raw YAML-loaded schema and return a typed model.
+
+    Beyond Pydantic field validation this also verifies that every $col(name)
+    reference points to a real column defined in the same table.
     """
     try:
-        return SchemaFile.model_validate(schema)
+        schema_model = SchemaFile.model_validate(schema)
     except ValidationError as e:
-        # Re-raise as ValueError to keep the surface area small for callers for now.
         raise ValueError(str(e)) from e
+
+    columns = schema_model.table.columns
+    col_names = set(columns.keys())
+
+    for col_name, col_cfg in columns.items():
+        for ref_col in get_col_refs(col_cfg):
+            if ref_col not in col_names:
+                raise ValueError(
+                    f"Column '{col_name}': $col('{ref_col}') references "
+                    f"unknown column '{ref_col}'"
+                )
+
+    return schema_model

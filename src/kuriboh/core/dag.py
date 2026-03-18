@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import Dict, List
+from typing import Dict, List, Set
 
-from ..parsers.validator import ColumnConfig, SchemaFile
+from ..parsers.validator import ColumnConfig, SchemaFile, get_col_refs
 
 
 def get_bind_to_col(col_cfg: ColumnConfig) -> str | None:
@@ -10,14 +10,46 @@ def get_bind_to_col(col_cfg: ColumnConfig) -> str | None:
     return col_cfg.bind_to or None
 
 
+def _collect_deps(
+    col_name: str,
+    col_cfg: ColumnConfig,
+    columns_cfg: Dict[str, ColumnConfig],
+) -> Set[str]:
+    """
+    Collect all declared dependencies for a column (bind_to + $col refs),
+    deduplicated to avoid double-counting the same edge.
+
+    Uses the full columns_cfg dict for O(1) membership checks.
+    """
+    deps: Set[str] = set()
+
+    if col_cfg.bind_to:
+        if col_cfg.bind_to not in columns_cfg:
+            raise ValueError(
+                f"Column '{col_name}' has bind_to '{col_cfg.bind_to}' "
+                f"but '{col_cfg.bind_to}' is not defined in this table"
+            )
+        deps.add(col_cfg.bind_to)
+
+    for ref_col in get_col_refs(col_cfg):
+        if ref_col not in columns_cfg:
+            raise ValueError(
+                f"Column '{col_name}' references $col('{ref_col}') "
+                f"but '{ref_col}' is not defined in this table"
+            )
+        deps.add(ref_col)
+
+    return deps
+
+
 def build_dag(columns_cfg: Dict[str, ColumnConfig]) -> List[str]:
     """
-    Build a column-level dependency graph from bind_to declarations and
-    return a topologically sorted list of column names (Kahn's algorithm).
+    Build a column-level dependency graph from bind_to and $col() declarations
+    and return a topologically sorted list of column names (Kahn's algorithm).
 
-    bind_to: name  means column depends on the column named 'name',
-    which must be resolved first. Raises ValueError if the referenced
-    column does not exist or if circular dependencies are detected.
+    Both bind_to and $col(...) in params create a "must come before" edge.
+    Raises ValueError if a referenced column does not exist or if circular
+    dependencies are detected.
     """
     all_cols = list(columns_cfg.keys())
 
@@ -26,16 +58,9 @@ def build_dag(columns_cfg: Dict[str, ColumnConfig]) -> List[str]:
     in_degree: Dict[str, int] = {col: 0 for col in all_cols}
 
     for col_name, col_cfg in columns_cfg.items():
-        dep_col = get_bind_to_col(col_cfg)
-        if dep_col is None:
-            continue
-        if dep_col not in columns_cfg:
-            raise ValueError(
-                f"Column '{col_name}' has bind_to '{col_cfg.bind_to}' "
-                f"but '{dep_col}' is not defined in this table"
-            )
-        adjacency[dep_col].append(col_name)
-        in_degree[col_name] += 1
+        for dep_col in _collect_deps(col_name, col_cfg, columns_cfg):
+            adjacency[dep_col].append(col_name)
+            in_degree[col_name] += 1
 
     # Kahn's algorithm — start from all nodes with no dependencies
     queue: List[str] = [col for col in all_cols if in_degree[col] == 0]

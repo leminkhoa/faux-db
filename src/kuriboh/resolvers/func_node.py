@@ -7,6 +7,7 @@ from typing import Any, Callable, Dict
 
 from ..core.context import GenerationContext
 from ..core.exceptions import FuncLoadError
+from ..parsers.validator import COL_REF_PATTERN
 from .base import BaseResolver
 
 
@@ -47,12 +48,11 @@ def _load_callable(path: str) -> Callable[..., Any]:
         obj = getattr(module, attr_name)
     except AttributeError:
         candidates = [x for x in dir(module) if not x.startswith("_")]
-        suggestion = _suggest_similar(attr_name, candidates)
-        if suggestion:
-            msg = f"Function '{path}' could not be loaded: '{attr_name}' does not exist in module '{module_name}'."
-        else:
-            msg = f"Function '{path}' could not be loaded: '{attr_name}' does not exist in module '{module_name}'."
-        raise FuncLoadError(msg, path, suggestion=suggestion)
+        raise FuncLoadError(
+            f"Function '{path}' could not be loaded: '{attr_name}' does not exist in module '{module_name}'.",
+            path,
+            suggestion=_suggest_similar(attr_name, candidates),
+        )
 
     if not callable(obj):
         raise FuncLoadError(
@@ -64,6 +64,29 @@ def _load_callable(path: str) -> Callable[..., Any]:
     return obj
 
 
+def _resolve_col_refs(params: Dict[str, Any], row: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Replace any "$col(name)" string values in params with the live value from
+    the current row. Called at generation time; the DAG guarantees referenced
+    columns are already resolved.
+    """
+    resolved: Dict[str, Any] = {}
+    for k, v in params.items():
+        if isinstance(v, str):
+            m = COL_REF_PATTERN.fullmatch(v.strip())
+            if m:
+                col_name = m.group(1)
+                if col_name not in row:
+                    raise ValueError(
+                        f"$col('{col_name}') referenced in func params "
+                        f"but '{col_name}' has not been generated yet"
+                    )
+                resolved[k] = row[col_name]
+                continue
+        resolved[k] = v
+    return resolved
+
+
 def _call_with_supported_kwargs(
     func: Callable[..., Any],
     params: Dict[str, Any],
@@ -71,10 +94,10 @@ def _call_with_supported_kwargs(
     row: Dict[str, Any],
 ) -> Any:
     """
-    Call func with params plus optional context/row if the callable accepts them.
-    Avoids TypeError when the user function does not declare context or row.
+    Resolve $col() references, then call func with the resolved params.
+    Injects context and row into kwargs only if the function signature accepts them.
     """
-    kwargs = dict(params)
+    kwargs = _resolve_col_refs(params, row)
     try:
         sig = inspect.signature(func)
     except ValueError:

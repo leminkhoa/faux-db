@@ -1,4 +1,4 @@
-# schemas/products.yml
+# schemas/ecommerce/products.yml
 products:
   rows: 200
   columns:
@@ -16,6 +16,13 @@ products:
       type: "$provider"
       target: "FurniturePriceProvider"
       bind_to: name
+
+    price_with_vat:
+      type: "$func"
+      func: "calculated.add_vat"
+      params:
+        value: $col(price)
+        rate: 0.1
 
     stock_quantity:
       type: "$faker"
