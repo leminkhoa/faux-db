@@ -23,7 +23,13 @@ def load_providers(base_dir: Path) -> Dict[str, Any]:
     merged: Dict[str, Any] = {}
     if not providers_dir.exists():
         return merged
-    for yml_path in sorted(providers_dir.glob("*.yml")):
+
+    # Support both `*.yml` and `*.yaml` provider fixtures.
+    supported_provider_patterns = ["*.yml", "*.yaml"]
+    paths = sorted(
+        set().union(*(providers_dir.glob(pattern) for pattern in supported_provider_patterns))
+    )
+    for yml_path in paths:
         with yml_path.open("r", encoding="utf-8") as f:
             data = yaml.safe_load(f) or {}
         merged.update(data)

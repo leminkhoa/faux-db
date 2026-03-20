@@ -1,0 +1,18 @@
+seating_arrangements:
+  sofas:
+    - "Sectional"
+    - "Loveseat"
+    - "Chaise Longue"
+  chairs:
+    - "Recliner"
+    - "Armchair"
+    - "Ottoman"
+
+surfaces_and_shelving:
+  tables:
+    - "Coffee Table"
+    - "End Table"
+    - "Console Table"
+  units:
+    - "Bookshelf"
+    - "Entertainment Center"

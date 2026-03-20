@@ -1,0 +1,16 @@
+dining_fixtures:
+  seating:
+    - "Bar Stool"
+    - "Counter Stool"
+    - "Benches"
+  tables:
+    - "Bistro Table"
+    - "Breakfast Nook"
+
+
+workstations:
+  storage:
+    - "Kitchen Island"
+    - "Pantry Cabinet"
+    - "Baker's Rack"
+    - "Sideboard"
