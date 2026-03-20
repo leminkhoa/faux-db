@@ -88,6 +88,30 @@ products:
     provider: "seeds.real_companies.name" # Example of using a seed file
 ```
 
+## Reproducible provider output (testing)
+
+For `random_choice`, `template_choice`, and `expression` providers you can set an optional **`seed`** (integer) in the provider YAML. That provider then uses its own `random.Random` or a dedicated `Faker` with `seed_instance(seed)` so repeated runs with the same config and seed produce the same sequence from that provider. (`Faker.seed()` is global and would affect every generator; we do not call it per provider.) Other columns may still use the global `Faker` / `random` unless they are also seeded.
+
+```yaml
+MyPicker:
+  type: random_choice
+  choices: [a, b, c]
+  seed: 42
+
+MyTemplate:
+  type: template_choice
+  seed: 42
+  templates:
+    - '{{ catalog("furniture.material") }}'
+
+MyExpr:
+  type: expression
+  seed: 42
+  exp: "{{ faker.random_int(10, 500) }}"
+```
+
+**Note:** Unique-column pooling (`enumerate_all` + shuffle) is still driven by the global `random` module in the resolver layer; for fully deterministic CSV output including unique pools, you may also need to seed Python’s global RNG at process start (e.g. `random.seed(...)` before running generation).
+
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a pull request.
