@@ -33,6 +33,11 @@ class TemplateChoiceProvider(BaseProvider):
 
     def __init__(self, templates: Iterable[str], seed: int | None = None) -> None:
         self._templates: List[str] = list(templates)
+        if not self._templates:
+            raise ValueError(
+                "TemplateChoiceProvider requires at least one template; "
+                "got an empty iterable."
+            )
         self._spans: List[List[CatalogSpan]] = [
             parse_catalog_spans(t) for t in self._templates
         ]

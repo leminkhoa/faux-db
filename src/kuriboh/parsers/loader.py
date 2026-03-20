@@ -34,13 +34,43 @@ def load_catalogs(base_dir: Path) -> Dict[str, Dict[str, Any]]:
     """
     Load all catalog YAML files found under `<base_dir>/catalogs/`.
 
-    Returns a dict keyed by filename stem (without `.yml`).
+    Recursively discovers ``*.yml`` and ``*.yaml`` in subdirectories (not only
+    the top level). Each file is keyed by its **basename** (filename stem).
+    If two files in different folders share the same basename, raises
+    ``ValueError`` so ``catalog('stem.key')`` remains unambiguous.
+
+    Returns a dict keyed by that basename stem.
     """
+
+    SUPPORTED_CATALOG_PATTERNS = ["**/*.yml", "**/*.yaml"]
+
     catalogs_dir = base_dir / CATALOGS_DIRNAME
     catalogs: Dict[str, Dict[str, Any]] = {}
+
     if not catalogs_dir.exists():
         return catalogs
-    for yml_path in sorted(catalogs_dir.glob("*.yml")):
+
+    paths = sorted(
+        set().union(*(catalogs_dir.glob(pattern) for pattern in SUPPORTED_CATALOG_PATTERNS))
+    )
+
+    seen: Dict[str, Path] = {}
+
+    for yml_path in paths:
+        if yml_path.is_dir():
+            continue
+
+        stem = yml_path.stem
+
+        if stem in seen and seen[stem] != yml_path:
+            raise ValueError(
+                f"Duplicate catalog basename '{stem}': {seen[stem]} vs {yml_path}. "
+                "Use unique filenames under catalogs/ (including subfolders)."
+            )
+
+        seen[stem] = yml_path
+
         with yml_path.open("r", encoding="utf-8") as f:
-            catalogs[yml_path.stem] = yaml.safe_load(f)
+            catalogs[stem] = yaml.safe_load(f) or {}
+
     return catalogs
