@@ -14,6 +14,7 @@ Kuriboh Faker is a configuration-driven data generation library that leverages t
 The project is organized into several key directories:
 
 -   `catalogs/`, `providers/`, `schemas/`, `seeds/`: These directories contain the user-defined YAML configurations and data files.
+    -   **Catalogs:** All `*.yml` and `*.yaml` files under `catalogs/` are loaded **recursively** (subfolders allowed). Each file is registered under the **basename** of the file (e.g. `catalogs/common/materials.yaml` → key `materials` for `catalog("materials.material")`). Two files with the same basename in different subfolders raise an error to keep lookups unambiguous.
 -   `src/kuriboh/`: Contains the core Python source code for the library, which is broken down into:
     -   `cli.py`: Entrypoint for the command-line interface.
     -   `core/`: The brain of the system, containing the main generation `engine`, `dag` for dependency resolution, and `context` for state management.
