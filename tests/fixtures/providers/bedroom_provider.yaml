@@ -1,0 +1,9 @@
+SleepingQuarterProvider:
+  type: "template_choice"
+  templates:
+    - '{{ catalog("color.color")}} {{ catalog("bedroom.sleeping_quarters") }}'
+
+StorageWardrobeProvider:
+  type: "template_choice"
+  templates:
+    - "{{ catalog('material.material') }} {{ catalog('bedroom.storage.wardrobes' }}"

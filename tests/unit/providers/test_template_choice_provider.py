@@ -23,7 +23,7 @@ def test_template_choice_first_material_from_fixture_catalogs(
     """
 
     provider = TemplateChoiceProvider(
-        templates=['{{ catalog("materials.material") | first }}'],
+        templates=['{{ catalog("material.material.") | first }}'],
     )
     out = provider.generate(context={"catalogs": loaded_catalogs})
     assert out == "Steel"

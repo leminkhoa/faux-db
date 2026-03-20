@@ -1,0 +1,17 @@
+sleeping_quarters:
+  beds:
+    - "Platform Bed"
+    - "Four-Poster Bed"
+    - "Daybed"
+  mattresses:
+    - "Memory Foam Mattress"
+    - "Innerspring Mattress"
+
+storage:
+  wardrobes:
+    - "Armoire"
+    - "Chiffonier"
+  surfaces:
+    - "Nightstand"
+    - "Vanity Table"
+    - "Dresser"
