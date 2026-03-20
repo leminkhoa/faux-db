@@ -1,0 +1,10 @@
+# schemas/ecommerce/products.yml
+products:
+  rows: 15
+  columns:
+    name:
+      type: "$provider"
+      target: "FurnitureFullNameWithSeedProvider"
+  output:
+    format: csv
+    filepath: "./outputs/seeds_test.csv"

@@ -15,8 +15,8 @@ CompanyProvider:
 FurnitureNameProvider:
   type: "template_choice"
   templates:
-    - "{{ catalog('furniture.material') | random }} {{ catalog('furniture.furniture') | random }}"
-    - "{{ catalog('furniture.color') | random }} @@@ {{ catalog('furniture.furniture') | random }}"
+    - '{{ catalog("furniture.material") }} {{ catalog("furniture.furniture") }}'
+    - '{{ catalog("furniture.color") }} @@@ {{ catalog("furniture.furniture") }}'
 
 
 FurniturePriceProvider:

@@ -42,3 +42,14 @@ adjective:
   - Generic
   - Handcrafted
   - Handmade
+
+combos:
+  product_phrases:
+    - "Oak Dining Table"
+    - "Walnut Coffee Table"
+    - "Steel Bar Stool"
+    - "Handcrafted Wooden Bookshelf"
+    - "Sleek Gray Sofa"
+    - "Ergonomic Desk Chair"
+    - "Rustic Wooden Wardrobe"
+    - "Modern White Nightstand"

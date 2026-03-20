@@ -9,7 +9,7 @@ products:
       
     name:
       type: "$provider"
-      target: "FurnitureNameProvider"
+      target: "FurnitureFullNameProvider"
       bind_to: id
       
     price:
