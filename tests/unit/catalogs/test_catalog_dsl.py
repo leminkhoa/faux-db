@@ -41,3 +41,51 @@ def test_resolve_span_default_when_empty():
         default="N/A",
     )
     assert resolve_span(span, {}, {}, 0, 0, rng=None) == "N/A"
+
+
+def test_parse_duplicate_default_raises():
+    with pytest.raises(ValueError, match="duplicate default"):
+        parse_catalog_spans(
+            '{{ catalog("furniture.material") | default(\'a\') | default(\'b\') }}'
+        )
+
+
+def test_parse_unknown_filter_raises():
+    with pytest.raises(ValueError, match="Unknown filter"):
+        parse_catalog_spans(
+            '{{ catalog("furniture.material") | not_a_real_filter }}'
+        )
+
+
+def test_parse_multiple_pick_filters_raises():
+    with pytest.raises(ValueError, match="Only one pick filter"):
+        parse_catalog_spans(
+            '{{ catalog("furniture.material") | random | first }}'
+        )
+
+
+def test_resolve_span_empty_when_terminal_not_list():
+    """`_deep_get` returns [] when the catalog path ends on a non-list value."""
+    span = CatalogSpan(
+        start=0,
+        end=10,
+        path=["furniture", "material"],
+        pick="first",
+        default=None,
+    )
+    catalogs = {"furniture": {"material": "scalar-not-a-list"}}
+    assert resolve_span(span, catalogs, {}, 0, 0, rng=None) == ""
+
+
+def test_resolve_span_unhandled_pick_raises_assertion():
+    """Unreachable via parsing; guards against bad :class:`CatalogSpan` construction."""
+    span = CatalogSpan(
+        start=0,
+        end=10,
+        path=["furniture", "material"],
+        pick="invalid_pick",
+        default=None,
+    )
+    catalogs = {"furniture": {"material": ["a"]}}
+    with pytest.raises(AssertionError, match="Unhandled pick filter"):
+        resolve_span(span, catalogs, {}, 0, 0, rng=None)

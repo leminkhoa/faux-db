@@ -5,6 +5,9 @@ import yaml
 
 from ..core import CATALOGS_DIRNAME, PROVIDERS_DIRNAME
 
+# Supported YAML filename suffixes for discovery (providers: top-level; catalogs: recursive).
+_SUPPORTED_YAML_SUFFIXES = (".yml", ".yaml")
+
 
 def load_schema(path: Path) -> Dict[str, Any]:
     with path.open("r", encoding="utf-8") as f:
@@ -24,10 +27,8 @@ def load_providers(base_dir: Path) -> Dict[str, Any]:
     if not providers_dir.exists():
         return merged
 
-    # Support both `*.yml` and `*.yaml` provider fixtures.
-    supported_provider_patterns = ["*.yml", "*.yaml"]
     paths = sorted(
-        set().union(*(providers_dir.glob(pattern) for pattern in supported_provider_patterns))
+        set().union(*(providers_dir.glob(f"*{s}") for s in _SUPPORTED_YAML_SUFFIXES))
     )
     for yml_path in paths:
         with yml_path.open("r", encoding="utf-8") as f:
@@ -48,8 +49,6 @@ def load_catalogs(base_dir: Path) -> Dict[str, Dict[str, Any]]:
     Returns a dict keyed by that basename stem.
     """
 
-    SUPPORTED_CATALOG_PATTERNS = ["**/*.yml", "**/*.yaml"]
-
     catalogs_dir = base_dir / CATALOGS_DIRNAME
     catalogs: Dict[str, Dict[str, Any]] = {}
 
@@ -57,7 +56,7 @@ def load_catalogs(base_dir: Path) -> Dict[str, Dict[str, Any]]:
         return catalogs
 
     paths = sorted(
-        set().union(*(catalogs_dir.glob(pattern) for pattern in SUPPORTED_CATALOG_PATTERNS))
+        set().union(*(catalogs_dir.glob(f"**/*{s}") for s in _SUPPORTED_YAML_SUFFIXES))
     )
 
     seen: Dict[str, Path] = {}

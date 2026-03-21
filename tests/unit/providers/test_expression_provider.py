@@ -5,23 +5,27 @@ from __future__ import annotations
 import pytest
 from faker import Faker
 
-from kuriboh.providers.expression import ExpressionProvider
+from kuriboh.providers.expression import ExpressionProvider, SUPPORTED_EXPRESSIONS
+
+
+def test_supported_expressions_lists_random_int():
+    assert "random_int" in SUPPORTED_EXPRESSIONS
 
 
 def test_expression_random_int_with_context_faker():
     ctx = {"faker": Faker()}
-    p = ExpressionProvider("{{ faker.random_int(10, 12) }}")
+    p = ExpressionProvider("{{ random_int(10, 12) }}")
     x = p.generate(ctx)
     assert 10 <= x <= 12
 
 
 def test_expression_seed_instance_deterministic():
-    p = ExpressionProvider("{{ faker.random_int(1, 1000) }}", seed=12345)
+    p = ExpressionProvider("{{ random_int(1, 1000) }}", seed=12345)
     x = p.generate({})
     y = p.generate({})
     assert x != y  # successive calls differ; not testing exact values
 
-    q = ExpressionProvider("{{ faker.random_int(1, 1000) }}", seed=12345)
+    q = ExpressionProvider("{{ random_int(1, 1000) }}", seed=12345)
     assert q.generate({}) == x
 
 
@@ -31,6 +35,12 @@ def test_expression_unsupported_format_raises():
         p.generate({"faker": Faker()})
 
 
+def test_expression_unknown_name_raises():
+    p = ExpressionProvider("{{ unknown_fn(1, 2) }}")
+    with pytest.raises(ValueError, match="Unsupported expression 'unknown_fn'"):
+        p.generate({"faker": Faker()})
+
+
 def test_expression_cardinality_random_int():
-    p = ExpressionProvider("{{ faker.random_int(1, 3) }}")
+    p = ExpressionProvider("{{ random_int(1, 3) }}")
     assert p.cardinality({}) == 3

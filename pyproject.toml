@@ -13,10 +13,6 @@ dependencies = [
 [tool.pytest.ini_options]
 pythonpath = ["src"]
 testpaths = ["tests"]
-addopts = [
-  "--cov=kuriboh",
-  "--cov-report=term-missing",
-]
 [dependency-groups]
 dev = [
     "pytest>=9.0.2",

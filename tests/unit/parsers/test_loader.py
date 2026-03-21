@@ -17,9 +17,10 @@ def test_load_case_simple_schema_product(fixtures_root):
 def test_load_providers(fixtures_root):
     providers_dict = load_providers(fixtures_root)
     provider_keys = providers_dict.keys()
-    assert(len(provider_keys) == 2)
+    assert(len(provider_keys) == 3)
     assert "SleepingQuarterProvider" in provider_keys
     assert "StorageWardrobeProvider" in provider_keys
+    assert "CustomerTierProvider" in provider_keys
 
 
 def test_load_catalogs_empty_when_no_catalogs_dir(tmp_path):

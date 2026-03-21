@@ -1,0 +1,4 @@
+CustomerTierProvider:
+  type: "random_choice"
+  choices: ["standard", "gold", "platinum", "diamond"]
+  seed: 42
