@@ -3,7 +3,7 @@ from __future__ import annotations
 import difflib
 import inspect
 from importlib import import_module
-from typing import Any, Callable
+from typing import Any, Callable, Dict
 
 from ..core.context import GenerationContext
 from ..core.exceptions import FuncLoadError
