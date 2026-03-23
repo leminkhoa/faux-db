@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Dict
+from typing import TYPE_CHECKING, Any
 
 from faker import Faker
 
@@ -15,7 +15,7 @@ class FakerResolver(BaseResolver):
         self,
         faker_instance: Faker,
         method: str,
-        params: Dict[str, Any] | None = None,
+        params: dict[str, Any] | None = None,
         bind_to_col: str | None = None,
         unique: bool = False,
         pk_cache_key: str | None = None,
@@ -31,6 +31,6 @@ class FakerResolver(BaseResolver):
         self._method = method
         self._params = params or {}
 
-    def _generate(self, context: "GenerationContext", row: Dict[str, Any]) -> Any:
+    def _generate(self, context: "GenerationContext", row: dict[str, Any]) -> Any:
         func = getattr(self._faker, self._method)
         return func(**self._params)

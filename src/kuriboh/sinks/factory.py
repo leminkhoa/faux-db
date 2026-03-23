@@ -9,7 +9,7 @@ from .csv_sink import CsvSink
 from .json_sink import JsonSink
 
 if TYPE_CHECKING:
-    from ..parsers.validator import OutputConfig
+    from ..parsers.schema import OutputConfig
 
 
 _SINK_REGISTRY: dict[str, type[BaseSink]] = {

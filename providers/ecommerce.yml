@@ -10,7 +10,7 @@ EmailDomainProvider:
 CompanyProvider:
   type: "file_reader"
   filepath: "real_companies.csv"
-  column: "company_name"
+  loaded_columns: ["name"]
 
 FurnitureNameProvider:
   type: "template_choice"

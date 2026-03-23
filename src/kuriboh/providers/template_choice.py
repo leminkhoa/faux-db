@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import itertools
 import random
-from typing import Any, Dict, Iterable, List
+from typing import Any
 
 from .base import BaseProvider
 from .catalog import (
@@ -31,25 +31,21 @@ class TemplateChoiceProvider(BaseProvider):
     (deterministic by row order).
     """
 
-    def __init__(self, templates: Iterable[str], seed: int | None = None) -> None:
-        self._templates: List[str] = list(templates)
+    def __init__(self, templates: list[str], seed: int | None = None) -> None:
+        self._templates = list(templates)
         if not self._templates:
             raise ValueError(
                 "TemplateChoiceProvider requires at least one template; "
                 "got an empty iterable."
             )
-        self._spans: List[List[CatalogSpan]] = [
+        self._spans: list[list[CatalogSpan]] = [
             parse_catalog_spans(t) for t in self._templates
         ]
-        self._cycle_state: Dict[CycleKey, int] = {}
-        self._rng: random.Random | None = (
-            random.Random(seed) if seed is not None else None
-        )
+        self._cycle_state: dict[CycleKey, int] = {}
+        self._rng = random.Random(seed)
 
-    def generate(self, context: Dict[str, Any]) -> Any:
-        rng = self._rng if self._rng is not None else random
-
-        template_idx = rng.randrange(len(self._templates))
+    def generate(self, context: dict[str, Any]) -> Any:
+        template_idx = self._rng.randrange(len(self._templates))
         template = self._templates[template_idx]
         spans = self._spans[template_idx]
         catalogs = context.get("catalogs", {})
@@ -57,16 +53,9 @@ class TemplateChoiceProvider(BaseProvider):
         if not spans:
             return template
 
-        return apply_spans(
-            template,
-            spans,
-            catalogs,
-            self._cycle_state,
-            template_idx,
-            rng=self._rng,
-        )
+        return apply_spans(template, spans, catalogs, self._cycle_state, template_idx, rng=self._rng)
 
-    def cardinality(self, catalogs: Dict[str, Any]) -> int | None:
+    def cardinality(self, catalogs: dict[str, Any]) -> int | None:
         total = 0
         for spans in self._spans:
             if not spans:
@@ -79,7 +68,7 @@ class TemplateChoiceProvider(BaseProvider):
             total += combo
         return total
 
-    def enumerate_all(self, catalogs: Dict[str, Any]) -> List[Any] | None:
+    def enumerate_all(self, catalogs: dict[str, Any]) -> list[Any] | None:
         results: dict[str, None] = {}
 
         for template_idx, (template, spans) in enumerate(

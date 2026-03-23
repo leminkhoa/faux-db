@@ -3,11 +3,11 @@ from __future__ import annotations
 import difflib
 import inspect
 from importlib import import_module
-from typing import Any, Callable, Dict
+from typing import Any, Callable
 
 from ..core.context import GenerationContext
 from ..core.exceptions import FuncLoadError
-from ..parsers.validator import COL_REF_PATTERN
+from ..parsers.schema import COL_REF_PATTERN
 from .base import BaseResolver
 
 
@@ -64,13 +64,13 @@ def _load_callable(path: str) -> Callable[..., Any]:
     return obj
 
 
-def _resolve_col_refs(params: Dict[str, Any], row: Dict[str, Any]) -> Dict[str, Any]:
+def _resolve_col_refs(params: dict[str, Any], row: dict[str, Any]) -> dict[str, Any]:
     """
     Replace any "$col(name)" string values in params with the live value from
     the current row. Called at generation time; the DAG guarantees referenced
     columns are already resolved.
     """
-    resolved: Dict[str, Any] = {}
+    resolved: dict[str, Any] = {}
     for k, v in params.items():
         if isinstance(v, str):
             m = COL_REF_PATTERN.fullmatch(v.strip())
@@ -89,9 +89,9 @@ def _resolve_col_refs(params: Dict[str, Any], row: Dict[str, Any]) -> Dict[str, 
 
 def _call_with_supported_kwargs(
     func: Callable[..., Any],
-    params: Dict[str, Any],
+    params: dict[str, Any],
     context: GenerationContext,
-    row: Dict[str, Any],
+    row: dict[str, Any],
 ) -> Any:
     """
     Resolve $col() references, then call func with the resolved params.
@@ -122,7 +122,7 @@ class FuncResolver(BaseResolver):
     def __init__(
         self,
         func_path: str,
-        params: Dict[str, Any] | None = None,
+        params: dict[str, Any] | None = None,
         bind_to_col: str | None = None,
         unique: bool = False,
         pk_cache_key: str | None = None,

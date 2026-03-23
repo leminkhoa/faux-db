@@ -1,1 +1,0 @@
-# Outputs data as SQL INSERT statements

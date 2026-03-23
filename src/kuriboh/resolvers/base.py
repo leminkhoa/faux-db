@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import random
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Any, Dict, List
+from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
     from ..core.context import GenerationContext
@@ -32,7 +32,7 @@ class BaseResolver(ABC):
         self._unique = unique
         self._pk_cache_key = pk_cache_key or cache_key
 
-    def resolve(self, context: "GenerationContext", row: Dict[str, Any]) -> Any:
+    def resolve(self, context: "GenerationContext", row: dict[str, Any]) -> Any:
         if self._unique and self._pk_cache_key:
             return self._resolve_pk(context, row)
 
@@ -64,7 +64,7 @@ class BaseResolver(ABC):
         else:
             context.pk_pool[key] = _UNBOUNDED  # type: ignore[assignment]
 
-    def _resolve_pk(self, context: "GenerationContext", row: Dict[str, Any]) -> Any:
+    def _resolve_pk(self, context: "GenerationContext", row: dict[str, Any]) -> Any:
         key = self._pk_cache_key
         assert key is not None
 
@@ -93,15 +93,15 @@ class BaseResolver(ABC):
             "(value space may be too small)"
         )
 
-    def cardinality(self, catalogs: Dict[str, Any]) -> int | None:
+    def cardinality(self, catalogs: dict[str, Any]) -> int | None:
         """Return the max unique values this resolver can produce, or None if unbounded."""
         return None
 
-    def enumerate_all(self, catalogs: Dict[str, Any]) -> List[Any] | None:
+    def enumerate_all(self, catalogs: dict[str, Any]) -> list[Any] | None:
         """Return every possible distinct value, or None if the space is unbounded/unknown."""
         return None
 
     @abstractmethod
-    def _generate(self, context: "GenerationContext", row: Dict[str, Any]) -> Any:
+    def _generate(self, context: "GenerationContext", row: dict[str, Any]) -> Any:
         """Produce a new value, called only when no cached value is available."""
         ...

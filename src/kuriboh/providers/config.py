@@ -1,14 +1,14 @@
 from __future__ import annotations
 
-from typing import Any, Annotated, List, Literal, Union
+from typing import Any, Annotated, Literal
 
 from pydantic import BaseModel, Field, TypeAdapter, ValidationError, model_validator
 
 
 class RandomChoiceProviderConfig(BaseModel):
     type: Literal["random_choice"]
-    choices: List[Any]
-    weights: List[float] | None = None
+    choices: list[Any]
+    weights: list[float] | None = None
     seed: int | None = Field(
         default=None,
         description="Optional RNG seed for reproducible random_choice output.",
@@ -26,12 +26,30 @@ class RandomChoiceProviderConfig(BaseModel):
 class FileReaderProviderConfig(BaseModel):
     type: Literal["file_reader"]
     filepath: str
-    column: str
+    loaded_columns: list[str] | None = None
+    column: str | None = Field(
+        default=None,
+        description="Deprecated: use loaded_columns (single column).",
+    )
+    encoding: str = "utf-8"
+    delimiter: str = ","
+    on_duplicate_key: Literal["first", "last", "error"] = "first"
+
+    @model_validator(mode="after")
+    def require_columns(self) -> "FileReaderProviderConfig":
+        if self.loaded_columns is not None:
+            if len(self.loaded_columns) == 0:
+                raise ValueError("loaded_columns must not be empty")
+            return self
+        if self.column:
+            self.loaded_columns = [self.column]
+            return self
+        raise ValueError("file_reader requires 'loaded_columns' or legacy 'column'")
 
 
 class TemplateChoiceProviderConfig(BaseModel):
     type: Literal["template_choice"]
-    templates: List[str] = Field(..., min_length=1)
+    templates: list[str] = Field(..., min_length=1)
     seed: int | None = Field(
         default=None,
         description="Optional RNG seed for template pick and catalog | random slots.",
@@ -54,12 +72,7 @@ class ExpressionProviderConfig(BaseModel):
 
 
 ProviderConfig = Annotated[
-    Union[
-        RandomChoiceProviderConfig,
-        FileReaderProviderConfig,
-        TemplateChoiceProviderConfig,
-        ExpressionProviderConfig,
-    ],
+    RandomChoiceProviderConfig | FileReaderProviderConfig | TemplateChoiceProviderConfig | ExpressionProviderConfig,
     Field(discriminator="type"),
 ]
 
