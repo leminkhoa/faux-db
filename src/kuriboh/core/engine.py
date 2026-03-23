@@ -6,7 +6,7 @@ from typing import Dict, List
 from faker import Faker
 
 from ..parsers.loader import load_catalogs, load_schema
-from ..parsers.validator import SchemaFile, validate_schema
+from ..parsers.schema import SchemaFile, validate_schema
 from .context import GenerationContext
 from .dag import build_table_dag
 from .table_generator import TableGenerator

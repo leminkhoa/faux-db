@@ -1,27 +1,20 @@
 from __future__ import annotations
 
-from typing import Dict, List, Set
-
-from ..parsers.validator import ColumnConfig, SchemaFile, get_col_refs
-
-
-def get_bind_to_col(col_cfg: ColumnConfig) -> str | None:
-    """Return the column name this column is bound to, or None."""
-    return col_cfg.bind_to or None
+from ..parsers.schema import ColumnConfig, SchemaFile, get_col_refs
 
 
 def _collect_deps(
     col_name: str,
     col_cfg: ColumnConfig,
-    columns_cfg: Dict[str, ColumnConfig],
-) -> Set[str]:
+    columns_cfg: dict[str, ColumnConfig],
+) -> set[str]:
     """
     Collect all declared dependencies for a column (bind_to + $col refs),
     deduplicated to avoid double-counting the same edge.
 
     Uses the full columns_cfg dict for O(1) membership checks.
     """
-    deps: Set[str] = set()
+    deps: set[str] = set()
 
     if col_cfg.bind_to:
         if col_cfg.bind_to not in columns_cfg:
@@ -42,7 +35,7 @@ def _collect_deps(
     return deps
 
 
-def build_dag(columns_cfg: Dict[str, ColumnConfig]) -> List[str]:
+def build_dag(columns_cfg: dict[str, ColumnConfig]) -> list[str]:
     """
     Build a column-level dependency graph from bind_to and $col() declarations
     and return a topologically sorted list of column names (Kahn's algorithm).
@@ -53,18 +46,16 @@ def build_dag(columns_cfg: Dict[str, ColumnConfig]) -> List[str]:
     """
     all_cols = list(columns_cfg.keys())
 
-    # adjacency[col] = list of columns that depend on col
-    adjacency: Dict[str, List[str]] = {col: [] for col in all_cols}
-    in_degree: Dict[str, int] = {col: 0 for col in all_cols}
+    adjacency: dict[str, list[str]] = {col: [] for col in all_cols}
+    in_degree: dict[str, int] = {col: 0 for col in all_cols}
 
     for col_name, col_cfg in columns_cfg.items():
         for dep_col in _collect_deps(col_name, col_cfg, columns_cfg):
             adjacency[dep_col].append(col_name)
             in_degree[col_name] += 1
 
-    # Kahn's algorithm — start from all nodes with no dependencies
-    queue: List[str] = [col for col in all_cols if in_degree[col] == 0]
-    order: List[str] = []
+    queue: list[str] = [col for col in all_cols if in_degree[col] == 0]
+    order: list[str] = []
 
     while queue:
         col = queue.pop(0)
@@ -81,7 +72,7 @@ def build_dag(columns_cfg: Dict[str, ColumnConfig]) -> List[str]:
     return order
 
 
-def build_table_dag(schemas: Dict[str, SchemaFile]) -> List[str]:
+def build_table_dag(schemas: dict[str, SchemaFile]) -> list[str]:
     """
     Build a table-level dependency graph from $rel targets and return
     table names in generation order (Kahn's algorithm).
@@ -91,8 +82,8 @@ def build_table_dag(schemas: Dict[str, SchemaFile]) -> List[str]:
     or circular dependencies.
     """
     all_tables = list(schemas.keys())
-    adjacency: Dict[str, List[str]] = {t: [] for t in all_tables}
-    in_degree: Dict[str, int] = {t: 0 for t in all_tables}
+    adjacency: dict[str, list[str]] = {t: [] for t in all_tables}
+    in_degree: dict[str, int] = {t: 0 for t in all_tables}
 
     for table_name, schema_file in schemas.items():
         for col_cfg in schema_file.table.columns.values():
@@ -109,8 +100,8 @@ def build_table_dag(schemas: Dict[str, SchemaFile]) -> List[str]:
             adjacency[ref_table].append(table_name)
             in_degree[table_name] += 1
 
-    queue: List[str] = [t for t in all_tables if in_degree[t] == 0]
-    order: List[str] = []
+    queue: list[str] = [t for t in all_tables if in_degree[t] == 0]
+    order: list[str] = []
 
     while queue:
         t = queue.pop(0)

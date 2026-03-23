@@ -5,14 +5,18 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 from ..parsers.loader import load_providers, load_schema
-from ..parsers.validator import validate_schema
+from ..parsers.schema import validate_schema
 from ..providers.registry import build_registry
 from ..resolvers.base import BaseResolver
 from ..sinks.base import BaseSink
 from ..sinks.factory import create_sink
 from .context import GenerationContext
 from .dag import build_dag
-from .resolver_builder import build_resolvers, compute_effective_unique
+from .resolver_factory import (
+    build_resolvers,
+    compute_effective_unique,
+    validate_provider_columns_for_plan,
+)
 
 
 @dataclass
@@ -68,6 +72,7 @@ class TableGenerator:
 
         providers_cfg = load_providers(self._base_dir)
         registry = build_registry(self._base_dir, providers_cfg)
+        validate_provider_columns_for_plan(registry, columns_cfg)
 
         column_order = build_dag(columns_cfg)
         effective_unique = compute_effective_unique(columns_cfg)

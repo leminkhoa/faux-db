@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 import re
-from typing import Any, Dict, List, Literal, Mapping
+from typing import Any, Literal, Mapping
 
-from pydantic import BaseModel, Field, RootModel, ValidationError, model_validator
+from pydantic import BaseModel, Field, RootModel, ValidationError, field_validator, model_validator
 
 from ..core import (
     COLUMN_GEN_TYPE__FAKER,
@@ -18,14 +18,54 @@ from ..core import ColumnGenType, RelStrategy
 COL_REF_PATTERN = re.compile(r"\$col\((\w+)\)")
 
 
-def get_col_refs(col_cfg: "ColumnConfig") -> List[str]:
-    """Return all column names referenced via $col(...) in this column's params."""
-    return [
-        m
-        for v in (col_cfg.params or {}).values()
-        if isinstance(v, str)
+def get_col_refs(col_cfg: "ColumnConfig") -> list[str]:
+    """Return all column names referenced via $col(...) in this column's config."""
+    refs: list[str] = [
+        m for v in (col_cfg.params or {}).values() if isinstance(v, str)
         for m in COL_REF_PATTERN.findall(v)
     ]
+
+    if col_cfg.type == COLUMN_GEN_TYPE__PROVIDER and col_cfg.lookup is not None:
+        key_from = col_cfg.lookup.key_from
+        parts = [key_from] if isinstance(key_from, str) else key_from
+        for part in parts:
+            refs.extend(COL_REF_PATTERN.findall(part))
+
+    return refs
+
+
+class SampleConfig(BaseModel):
+    strategy: Literal["sequential", "random", "shuffle"] = "sequential"
+    seed: int | None = Field(
+        default=None,
+        description="Optional RNG seed for random/shuffle sample strategies.",
+    )
+
+
+class LookupConfig(BaseModel):
+    key_columns: list[str] = Field(..., min_length=1)
+    key_from: str | list[str]
+    value_column: str
+    on_missing: Literal["null", "error", "default"] = "null"
+    default_value: Any | None = None
+
+    @field_validator("key_from", mode="before")
+    @classmethod
+    def normalize_key_from(cls, v: Any) -> str | list[str]:
+        if not isinstance(v, (str, list)):
+            raise TypeError("key_from must be a string or list of strings")
+        return v
+
+    @model_validator(mode="after")
+    def key_lengths(self) -> "LookupConfig":
+        kf = self.key_from
+        parts = [kf] if isinstance(kf, str) else kf
+        if len(self.key_columns) != len(parts):
+            raise ValueError(
+                "lookup.key_columns and lookup.key_from must have the same length "
+                f"({len(self.key_columns)} vs {len(parts)})"
+            )
+        return self
 
 
 class ColumnConfig(BaseModel):
@@ -33,17 +73,19 @@ class ColumnConfig(BaseModel):
     method: str | None = None
     target: str | None = None
     func: str | None = None
-    params: Dict[str, Any] | None = None
+    params: dict[str, Any] | None = None
     bind_to: str | None = None
     strategy: RelStrategy = "random"
     unique: bool = False
+    mode: Literal["sample", "lookup"] = "sample"
+    column: str | None = None
+    sample: SampleConfig | None = None
+    lookup: LookupConfig | None = None
 
     @model_validator(mode="after")
     def check_required_fields(self) -> "ColumnConfig":
         if self.type == COLUMN_GEN_TYPE__FAKER and not self.method:
             raise ValueError("Faker column must define 'method'")
-        if self.type == COLUMN_GEN_TYPE__PROVIDER and not self.target:
-            raise ValueError("Provider column must define 'target'")
         if self.type == COLUMN_GEN_TYPE__REL:
             if not self.target or "." not in self.target:
                 raise ValueError("Rel column must define 'target' as '<table>.<column>'")
@@ -53,6 +95,13 @@ class ColumnConfig(BaseModel):
                     "Func column must define 'func' as '<module>.<callable>' "
                     "(e.g. 'test.country_of_origin')"
                 )
+        if self.type == COLUMN_GEN_TYPE__PROVIDER:
+            if not self.target:
+                raise ValueError("Provider column must define 'target'")
+            if self.mode == "lookup" and not self.lookup:
+                raise ValueError("Provider column with mode 'lookup' must define 'lookup'")
+            if self.mode == "sample" and self.lookup is not None:
+                raise ValueError("Provider column with mode 'sample' must not define 'lookup'")
         return self
 
 
@@ -63,11 +112,11 @@ class OutputConfig(BaseModel):
 
 class TableSchema(BaseModel):
     rows: int = Field(..., gt=0)
-    columns: Dict[str, ColumnConfig]
+    columns: dict[str, ColumnConfig]
     output: OutputConfig
 
 
-class SchemaFile(RootModel[Dict[str, TableSchema]]):
+class SchemaFile(RootModel[dict[str, TableSchema]]):
 
     @property
     def table_name(self) -> str:

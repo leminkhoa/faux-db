@@ -1,26 +1,57 @@
 from __future__ import annotations
 
 import pytest
-from pathlib import Path
 
 from kuriboh.parsers.loader import load_schema, load_providers, load_catalogs
 
 
-def test_load_case_simple_schema_product(fixtures_root):
-    schema_path = Path(fixtures_root) / "schemas" / "test_case_simple" / "product.yml"
+def test_load_schema_returns_table_with_rows_columns_output(tmp_path):
+    schema_path = tmp_path / "product.yml"
+    schema_path.write_text(
+        """
+product:
+  rows: 5
+  columns:
+    id:
+      type: "$faker"
+      method: "uuid4"
+  output:
+    format: csv
+    filepath: "./outputs/products.csv"
+""".strip(),
+        encoding="utf-8",
+    )
     schema = load_schema(schema_path)
     assert isinstance(schema, dict)
-    assert "product" in schema.keys()
+    assert "product" in schema
     assert list(schema["product"].keys()) == ["rows", "columns", "output"]
 
 
-def test_load_providers(fixtures_root):
-    providers_dict = load_providers(fixtures_root)
-    provider_keys = providers_dict.keys()
-    assert(len(provider_keys) == 3)
-    assert "SleepingQuarterProvider" in provider_keys
-    assert "StorageWardrobeProvider" in provider_keys
-    assert "CustomerTierProvider" in provider_keys
+def test_load_providers_merges_all_yaml_under_providers_dir(tmp_path):
+    providers_dir = tmp_path / "providers"
+    providers_dir.mkdir()
+    (providers_dir / "a.yml").write_text(
+        """\
+AlphaProvider:
+  type: random_choice
+  choices: ["x"]
+BetaProvider:
+  type: random_choice
+  choices: ["y"]
+""",
+        encoding="utf-8",
+    )
+    (providers_dir / "b.yml").write_text(
+        """\
+GammaProvider:
+  type: random_choice
+  choices: ["z"]
+""",
+        encoding="utf-8",
+    )
+    providers_dict = load_providers(tmp_path)
+    assert len(providers_dict) == 3
+    assert {"AlphaProvider", "BetaProvider", "GammaProvider"} == set(providers_dict.keys())
 
 
 def test_load_catalogs_empty_when_no_catalogs_dir(tmp_path):

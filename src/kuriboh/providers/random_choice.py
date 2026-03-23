@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import random
-from typing import Any, Dict, List, Sequence
+from typing import Any
 
 from .base import BaseProvider
 
@@ -27,47 +27,21 @@ class RandomChoiceProvider(BaseProvider):
 
     def __init__(
         self,
-        choices: Sequence[Any],
-        weights: Sequence[float] | None = None,
+        choices: list[Any],
+        weights: list[float] | None = None,
         seed: int | None = None,
     ):
         self._choices = list(choices)
         self._weights = list(weights) if weights is not None else None
-        self._rng: random.Random | None = (
-            random.Random(seed) if seed is not None else None
-        )
+        self._rng = random.Random(seed)
 
-    def generate(self, context: Dict[str, Any]) -> Any:
-        rng = self._rng if self._rng is not None else random
-
+    def generate(self, context: dict[str, Any]) -> Any:
         if self._weights:
-            return rng.choices(self._choices, weights=self._weights, k=1)[0]
-        return rng.choice(self._choices)
+            return self._rng.choices(self._choices, weights=self._weights, k=1)[0]
+        return self._rng.choice(self._choices)
 
-    def cardinality(self, catalogs: Dict[str, Any]) -> int | None:
-        """Return how many distinct outputs ``generate`` can produce.
+    def cardinality(self, catalogs: dict[str, Any]) -> int | None:
+        return len({str(c) for c in self._choices})
 
-        Uniqueness is determined by ``str(choice)``, so values that stringify
-        the same (e.g. ``1`` and ``\"1\"``) count once.
-
-        Args:
-            catalogs: Unused; present for :class:`BaseProvider` compatibility.
-
-        Returns:
-            The number of unique string forms among ``choices``.
-        """
-        return len(set(str(c) for c in self._choices))
-
-    def enumerate_all(self, catalogs: Dict[str, Any]) -> List[Any] | None:
-        """Return every distinct choice in first-seen order.
-
-        Equivalent to ``list(dict.fromkeys(choices))`` over the configured
-        sequence.
-
-        Args:
-            catalogs: Unused; present for :class:`BaseProvider` compatibility.
-
-        Returns:
-            Unique choice values in first-seen order.
-        """
+    def enumerate_all(self, catalogs: dict[str, Any]) -> list[Any] | None:
         return list(dict.fromkeys(self._choices))

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import random
-from typing import TYPE_CHECKING, Any, Dict
+from typing import TYPE_CHECKING, Any
 
 from .base import BaseResolver
 
@@ -17,7 +17,7 @@ class RelResolver(BaseResolver):
         self._strategy = strategy
         self._seq_index = 0
 
-    def _generate(self, context: "GenerationContext", row: Dict[str, Any]) -> Any:
+    def _generate(self, context: "GenerationContext", row: dict[str, Any]) -> Any:
         source_rows = context.generated_tables.get(self._table, [])
         if not source_rows:
             raise ValueError(f"Table '{self._table}' has not been generated yet")
