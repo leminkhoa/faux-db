@@ -20,21 +20,16 @@ def _demo_catalogs() -> Dict[str, Any]:
     }
 
 
-def test_template_choice_first_material_from_fixture_catalogs(
-    loaded_catalogs: Dict[str, Any],
-) -> None:
-    """
-    Catalogs from ``tests/fixtures/catalogs/common/material.yaml`` are loaded
-    via the session-scoped ``loaded_catalogs`` fixture (see ``tests/conftest.py``).
-
-    ``| first`` picks the first list entry, so output is deterministic without
-    relying on RNG for the catalog slot.
-    """
-
+def test_template_choice_first_material_from_inline_catalogs() -> None:
+    catalogs = {
+        "material": {
+            "material": ["Steel", "Wooden", "Plastic"],
+        }
+    }
     provider = TemplateChoiceProvider(
         templates=['{{ catalog("material.material") | first }}'],
     )
-    out = provider.generate(context={"catalogs": loaded_catalogs})
+    out = provider.generate(context={"catalogs": catalogs})
     assert out == "Steel"
 
 

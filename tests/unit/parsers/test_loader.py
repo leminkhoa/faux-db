@@ -94,7 +94,37 @@ def test_load_catalogs_duplicate_basename_raises_value_error(tmp_path):
         load_catalogs(tmp_path)
 
 
-def test_load_catalogs_fixtures_contains_expected_catalogs(loaded_catalogs):
+def test_load_catalogs_returns_expected_catalog_keys_for_nested_fixture_shape(tmp_path):
+    catalogs_dir = tmp_path / "catalogs"
+    (catalogs_dir / "common").mkdir(parents=True)
+    (catalogs_dir / "furnitures").mkdir(parents=True)
+
+    (catalogs_dir / "common" / "adjective.yaml").write_text(
+        "adjective:\n  style:\n    - Sleek\n",
+        encoding="utf-8",
+    )
+    (catalogs_dir / "common" / "color.yaml").write_text(
+        "color:\n  - Red\n  - Blue\n",
+        encoding="utf-8",
+    )
+    (catalogs_dir / "common" / "material.yaml").write_text(
+        "material:\n  - Steel\n  - Wood\n",
+        encoding="utf-8",
+    )
+    (catalogs_dir / "furnitures" / "bedroom.yaml").write_text(
+        "sleeping_quarters:\n  beds:\n    - Platform Bed\n",
+        encoding="utf-8",
+    )
+    (catalogs_dir / "furnitures" / "kitchen.yaml").write_text(
+        "dining_fixtures:\n  tables:\n    - Bistro Table\n",
+        encoding="utf-8",
+    )
+    (catalogs_dir / "furnitures" / "living_room.yaml").write_text(
+        "seating_arrangements:\n  sofas:\n    - Sectional\n",
+        encoding="utf-8",
+    )
+
+    loaded_catalogs = load_catalogs(tmp_path)
     expected_keys = {"bedroom", "kitchen", "living_room", "adjective", "material", "color"}
     assert expected_keys.issubset(loaded_catalogs.keys())
     for key in expected_keys:
