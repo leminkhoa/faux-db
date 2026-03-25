@@ -1,0 +1,36 @@
+transaction_orders:
+  rows: 30
+  columns:
+    id:
+      type: "$faker"
+      method: "uuid4"
+      unique: true
+    transaction_id:
+      type: "$rel"
+      target: "transaction.id"
+      strategy: sequential
+    product_id:
+      type: "$rel"
+      target: "product.id"
+      strategy: random
+    qty:
+      type: "$faker"
+      method: "pyint"
+      params:
+        min_value: 1
+        max_value: 4
+    line_subtotal_cents:
+      type: "$func"
+      func: "shopping.line_subtotal_cents"
+      params:
+        qty: "$col(qty)"
+        product_id: "$col(product_id)"
+    created_at:
+      type: "$faker"
+      method: "date_between"
+      params:
+        start_date: "-1y"
+        end_date: "today"
+  output:
+    format: csv
+    filepath: "./outputs/transaction_orders.csv"

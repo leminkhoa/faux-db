@@ -1,0 +1,18 @@
+# Table E — fan-in from B and D (B → E, D → E).
+junction_e:
+  rows: 2
+  columns:
+    id:
+      type: "$faker"
+      method: "uuid4"
+    link_b:
+      type: "$rel"
+      target: "wave_b.id"
+      strategy: "sequential"
+    link_d:
+      type: "$rel"
+      target: "wave_d.id"
+      strategy: "sequential"
+  output:
+    format: csv
+    filepath: "./outputs/junction_e.csv"

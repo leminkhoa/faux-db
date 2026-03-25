@@ -1,0 +1,14 @@
+# Table F — depends on E (E → F).
+terminal_f:
+  rows: 2
+  columns:
+    id:
+      type: "$faker"
+      method: "uuid4"
+    link_e:
+      type: "$rel"
+      target: "junction_e.id"
+      strategy: "sequential"
+  output:
+    format: csv
+    filepath: "./outputs/terminal_f.csv"

@@ -1,0 +1,18 @@
+line:
+  rows: 3
+  columns:
+    price:
+      type: "$faker"
+      method: "pyint"
+      params:
+        min_value: 100
+        max_value: 100
+    price_with_vat:
+      type: "$func"
+      func: "simple.add_vat"
+      params:
+        value: "$col(price)"
+        rate: 0.1
+  output:
+    format: csv
+    filepath: "./outputs/lines.csv"

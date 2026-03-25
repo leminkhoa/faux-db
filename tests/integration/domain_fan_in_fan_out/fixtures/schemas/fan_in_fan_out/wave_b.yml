@@ -1,0 +1,14 @@
+# Table B — depends on A (A → B).
+wave_b:
+  rows: 2
+  columns:
+    id:
+      type: "$faker"
+      method: "uuid4"
+    link_a:
+      type: "$rel"
+      target: "wave_a.id"
+      strategy: "sequential"
+  output:
+    format: csv
+    filepath: "./outputs/wave_b.csv"

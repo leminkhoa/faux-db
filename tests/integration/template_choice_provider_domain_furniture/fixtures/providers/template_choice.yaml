@@ -1,0 +1,23 @@
+# Filters exercised: ``| first``, ``| random`` (seeded), ``| cycle``, ``| default``.
+
+FirstFilterProvider:
+  type: "template_choice"
+  seed: 1
+  templates:
+    - '{{ catalog("color.color") | first }} {{ catalog("bedroom.sleeping_quarters.beds") | first }}'
+
+RandomFilterProvider:
+  type: "template_choice"
+  seed: 100
+  templates:
+    - '{{ catalog("color.color") | random }}'
+
+CycleFilterProvider:
+  type: "template_choice"
+  templates:
+    - '{{ catalog("bedroom.sleeping_quarters.beds") | cycle }}'
+
+DefaultFilterProvider:
+  type: "template_choice"
+  templates:
+    - '{{ catalog("empty.nil_slot") | default("N/A") }}'

@@ -1,0 +1,10 @@
+# Table C — root of right branch (C → D → E).
+wave_c:
+  rows: 2
+  columns:
+    id:
+      type: "$faker"
+      method: "uuid4"
+  output:
+    format: csv
+    filepath: "./outputs/wave_c.csv"

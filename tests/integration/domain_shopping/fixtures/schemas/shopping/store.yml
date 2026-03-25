@@ -1,0 +1,28 @@
+store:
+  rows: 30
+  columns:
+    id:
+      type: "$faker"
+      method: "uuid4"
+      unique: true
+    store_code:
+      type: "$faker"
+      method: "bothify"
+      params:
+        text: "ST-########"
+      unique: true
+    region:
+      type: "$provider"
+      target: "StoreRegionProvider"
+    tagline:
+      type: "$provider"
+      target: "StoreTaglineProvider"
+    created_at:
+      type: "$faker"
+      method: "date_between"
+      params:
+        start_date: "-1y"
+        end_date: "today"
+  output:
+    format: csv
+    filepath: "./outputs/store.csv"
