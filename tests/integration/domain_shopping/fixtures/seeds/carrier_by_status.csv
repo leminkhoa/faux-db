@@ -1,0 +1,4 @@
+order_status,carrier_hint
+pending,defer
+paid,standard
+fulfilled,express

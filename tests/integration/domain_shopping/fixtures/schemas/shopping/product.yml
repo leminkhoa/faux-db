@@ -1,0 +1,61 @@
+product:
+  rows: 30
+  columns:
+    id:
+      type: "$faker"
+      method: "uuid4"
+      unique: true
+    store_id:
+      type: "$rel"
+      target: "store.id"
+      strategy: sequential
+    sku:
+      type: "$faker"
+      method: "pystr"
+      params:
+        min_chars: 8
+        max_chars: 8
+      unique: true
+    category:
+      type: "$provider"
+      target: "ProductCategoryProvider"
+    unit_price_cents:
+      type: "$faker"
+      method: "pyint"
+      params:
+        min_value: 99
+        max_value: 4999
+    price_display:
+      type: "$func"
+      func: "shopping.format_price_display"
+      params:
+        cents: "$col(unit_price_cents)"
+    title:
+      type: "$provider"
+      target: "ProductTitleProvider"
+      bind_to: id
+    shelf_label:
+      type: "$provider"
+      target: "StoreShelfProvider"
+      bind_to: store_id
+    line_tag:
+      type: "$provider"
+      target: "SkuFlavorProvider"
+      bind_to: store_id
+    brand_swatch:
+      type: "$provider"
+      target: "BrandSwatchProvider"
+      mode: sample
+      column: label
+      sample:
+        strategy: shuffle
+        seed: 41
+    created_at:
+      type: "$faker"
+      method: "date_between"
+      params:
+        start_date: "-1y"
+        end_date: "today"
+  output:
+    format: csv
+    filepath: "./outputs/product.csv"

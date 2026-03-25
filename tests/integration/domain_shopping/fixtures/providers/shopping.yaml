@@ -1,0 +1,83 @@
+# random_choice — regions, segments, categories, channels, statuses, shelf codes, sku tags
+StoreRegionProvider:
+  type: random_choice
+  seed: 11
+  choices: ["west", "east", "central"]
+  weights: [0.5, 0.3, 0.2]
+
+CustomerSegmentProvider:
+  type: random_choice
+  seed: 13
+  choices: ["b2c", "b2b", "wholesale"]
+
+ProductCategoryProvider:
+  type: random_choice
+  seed: 17
+  choices: ["grocery", "apparel", "electronics"]
+
+TransactionChannelProvider:
+  type: random_choice
+  seed: 19
+  choices: ["web", "pos", "mobile"]
+  weights: [0.4, 0.35, 0.25]
+
+OrderStatusProvider:
+  type: random_choice
+  seed: 23
+  choices: ["pending", "paid", "fulfilled"]
+
+StoreShelfProvider:
+  type: random_choice
+  seed: 29
+  choices: ["A", "B", "C"]
+
+SkuFlavorProvider:
+  type: random_choice
+  seed: 31
+  choices: ["std", "xl"]
+
+OrderStatusEchoProvider:
+  type: random_choice
+  seed: 43
+  choices: ["echo-a", "echo-b", "echo-c"]
+
+NicknameProvider:
+  type: random_choice
+  seed: 37
+  choices: ["VIP", "Member", "Guest"]
+
+# template_choice — catalog DSL (| first, | random, | cycle)
+StoreTaglineProvider:
+  type: template_choice
+  seed: 3
+  templates:
+    - '{{ catalog("retail.store_taglines") | first }}'
+
+ProductTitleProvider:
+  type: template_choice
+  seed: 5
+  templates:
+    - '{{ catalog("retail.product_adjectives") | random }} {{ catalog("retail.product_nouns") | cycle }}'
+
+CustomerWelcomeProvider:
+  type: template_choice
+  seed: 7
+  templates:
+    - '{{ catalog("retail.customer_welcome") | cycle }}'
+
+TransactionReceiptProvider:
+  type: template_choice
+  seed: 101
+  templates:
+    - 'rcpt-{{ catalog("retail.receipt_suffix") | random }}-{{ catalog("retail.channels") | first }}'
+
+# file_reader — lookup by status + shuffled brand sample
+CarrierLookupProvider:
+  type: file_reader
+  filepath: "carrier_by_status.csv"
+  loaded_columns: [order_status, carrier_hint]
+
+BrandSwatchProvider:
+  type: file_reader
+  filepath: "brands.csv"
+  loaded_columns: [code, label]

@@ -1,0 +1,46 @@
+store_taglines:
+  - Daily deals
+  - Friendly staff
+  - Neighborhood prices
+
+product_adjectives:
+  - Fresh
+  - Local
+  - Organic
+  - Crisp
+  - Bold
+  - Soft
+  - Bright
+  - Cozy
+  - Swift
+  - Calm
+  - Wild
+  - Prime
+
+product_nouns:
+  - beans
+  - gadget
+  - coat
+  - basket
+  - lamp
+  - towel
+  - pillow
+  - kettle
+  - scarf
+  - journal
+  - crate
+  - brush
+
+customer_welcome:
+  - Thanks for shopping
+  - Welcome back
+
+receipt_suffix:
+  - A7
+  - B2
+  - Z9
+
+channels:
+  - web
+  - pos
+  - mobile

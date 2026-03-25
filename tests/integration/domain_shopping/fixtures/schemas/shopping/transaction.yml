@@ -1,0 +1,46 @@
+transaction:
+  rows: 30
+  columns:
+    id:
+      type: "$faker"
+      method: "uuid4"
+      unique: true
+    customer_id:
+      type: "$rel"
+      target: "customer.id"
+      strategy: random
+    store_id:
+      type: "$rel"
+      target: "store.id"
+      strategy: random
+    channel:
+      type: "$provider"
+      target: "TransactionChannelProvider"
+    order_status:
+      type: "$provider"
+      target: "OrderStatusProvider"
+    status_stamp:
+      type: "$provider"
+      target: "OrderStatusEchoProvider"
+      bind_to: order_status
+    carrier_hint:
+      type: "$provider"
+      target: "CarrierLookupProvider"
+      mode: lookup
+      lookup:
+        key_columns: [order_status]
+        key_from: "$col(order_status)"
+        value_column: carrier_hint
+        on_missing: error
+    receipt_line:
+      type: "$provider"
+      target: "TransactionReceiptProvider"
+    created_at:
+      type: "$faker"
+      method: "date_between"
+      params:
+        start_date: "-1y"
+        end_date: "today"
+  output:
+    format: csv
+    filepath: "./outputs/transaction.csv"
