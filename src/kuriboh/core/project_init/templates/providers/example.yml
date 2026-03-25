@@ -1,0 +1,13 @@
+UserSegmentProvider:
+  type: random_choice
+  seed: 11
+  choices:
+    - new
+    - repeat
+    - vip
+
+WelcomeLineProvider:
+  type: template_choice
+  seed: 17
+  templates:
+    - '{{ catalog("demo.greetings") | cycle }} {{ catalog("demo.user_suffixes") | random }}'

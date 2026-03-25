@@ -8,14 +8,38 @@ dependencies = [
     "faker==40.11.0",
     "pyyaml==6.0.3",
     "pydantic==2.12.5",
-    "polars==1.39.3"
+    "polars==1.39.3",
+    "click",
+    "rich"
 ]
 
-[tool.pytest.ini_options]
-pythonpath = ["src", "."]
-testpaths = ["tests"]
 [dependency-groups]
 dev = [
     "pytest>=9.0.2",
     "pytest-cov>=6.0.0",
 ]
+
+[project.scripts]
+kuriboh = "kuriboh.cli:main"
+
+[tool.pytest.ini_options]
+pythonpath = ["src", "."]
+testpaths = ["tests"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+kuriboh = [
+    "core/project_init/templates/catalogs/*.yml",
+    "core/project_init/templates/functions/*.py",
+    "core/project_init/templates/providers/*.yml",
+    "core/project_init/templates/schemas/example/*.yml",
+]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
