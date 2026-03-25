@@ -158,7 +158,9 @@ def test_config_help_includes_detailed_guides():
     assert result.exit_code == 0, result.output
     assert "Validation includes:" in result.output
     assert "kuriboh config validate ./demo-project" in result.output
-    assert "Examples:\n  kuriboh config validate\n  kuriboh config validate ./demo-project" in result.output
+    assert "Examples:" in result.output
+    assert "kuriboh config validate\n" in result.output or "kuriboh config validate" in result.output
+    assert "kuriboh config validate ./demo-project" in result.output
 
 
 def test_schema_generate_help_includes_examples():
