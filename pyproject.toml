@@ -1,6 +1,6 @@
 [project]
 name = "faux-db"
-version = "0.1.0"
+version = "0.1.1"
 description = "Configuration-driven fake data generation built on top of faker."
 readme = "README.md"
 requires-python = ">=3.11"
