@@ -1,9 +1,9 @@
 # Generation Flow
 
-This page explains what Kuriboh does after you run a command such as:
+This page explains what faux-db does after you run a command such as:
 
 ```bash
-kuriboh schema generate schemas/example
+faux schema generate schemas/example
 ```
 
 ## End-to-end flow
@@ -18,7 +18,7 @@ sequenceDiagram
     participant X as Resolvers
     participant S as Sink
 
-    U->>C: kuriboh schema generate &lt;path&gt;
+    U->>C: faux schema generate &lt;path&gt;
     C->>P: load schema, providers, catalogs
     P->>R: validate and build providers
     P->>D: build table and column dependencies
@@ -30,7 +30,7 @@ sequenceDiagram
 
 ## Single-table generation
 
-For one schema file, Kuriboh:
+For one schema file, faux-db:
 
 1. loads and validates the schema
 2. loads providers and catalogs
@@ -41,7 +41,7 @@ For one schema file, Kuriboh:
 
 ## Domain generation
 
-If the path is a directory, Kuriboh treats it as a domain:
+If the path is a directory, faux-db treats it as a domain:
 
 1. every schema file in that directory is loaded
 2. table names are checked for uniqueness
@@ -51,7 +51,7 @@ If the path is a directory, Kuriboh treats it as a domain:
 
 ## Validation before execution
 
-`kuriboh config validate` runs most of the planning steps without writing output.
+`faux config validate` runs most of the planning steps without writing output.
 That makes it the safest way to verify:
 
 - provider config shape

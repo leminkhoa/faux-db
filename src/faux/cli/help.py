@@ -5,26 +5,26 @@ CONTEXT_SETTINGS = {
     "max_content_width": 100,
 }
 
-ROOT_HELP = """Generate sample data and validate Kuriboh projects.
+ROOT_HELP = """Generate sample data and validate faux-db projects.
 
 \b
 Common patterns:
-  kuriboh init
-  kuriboh init demo-project
-  kuriboh config validate
-  kuriboh schema generate schemas/example
-  kuriboh schema generate schemas/example/users.yml
+  faux init
+  faux init demo-project
+  faux config validate
+  faux schema generate schemas/example
+  faux schema generate schemas/example/users.yml
 
-Use `kuriboh <command> --help` to see examples and detailed guides for each command group.
+Use `faux <command> --help` to see examples and detailed guides for each command group.
 """
 
-INIT_HELP = """Create a starter Kuriboh project structure.
+INIT_HELP = """Create a starter faux-db project structure.
 
 \b
 Examples:
-  kuriboh init
-  kuriboh init demo-project
-  kuriboh init demo-project --force
+  faux init
+  faux init demo-project
+  faux init demo-project --force
 
 \b
 What gets created:
@@ -38,8 +38,8 @@ CONFIG_HELP = """Inspect and validate project configuration.
 
 \b
 Examples:
-  kuriboh config validate
-  kuriboh config validate ./demo-project
+  faux config validate
+  faux config validate ./demo-project
 
 \b
 Validation includes:
@@ -53,17 +53,17 @@ CONFIG_VALIDATE_HELP = """Validate providers, catalogs, and schemas under a proj
 
 \b
 Examples:
-  kuriboh config validate
-  kuriboh config validate .
-  kuriboh config validate ./demo-project
+  faux config validate
+  faux config validate .
+  faux config validate ./demo-project
 """
 
 SCHEMA_HELP = """Generate data from schema files or domain directories.
 
 \b
 Examples:
-  kuriboh schema generate schemas/example
-  kuriboh schema generate schemas/example/users.yml
+  faux schema generate schemas/example
+  faux schema generate schemas/example/users.yml
 
 \b
 Tip:
@@ -74,6 +74,6 @@ SCHEMA_GENERATE_HELP = """Generate data from a schema file or schema directory.
 
 \b
 Examples:
-  kuriboh schema generate schemas/example
-  kuriboh schema generate schemas/example/users.yml
+  faux schema generate schemas/example
+  faux schema generate schemas/example/users.yml
 """

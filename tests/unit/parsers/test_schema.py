@@ -1,5 +1,5 @@
 """
-Tests for :mod:`kuriboh.parsers.schema`.
+Tests for :mod:`faux.parsers.schema`.
 
 Covers:
 - SampleConfig defaults and validation
@@ -16,7 +16,7 @@ from __future__ import annotations
 import pytest
 from pydantic import ValidationError
 
-from kuriboh.parsers.schema import (
+from faux.parsers.schema import (
     ColumnConfig,
     LookupConfig,
     SampleConfig,

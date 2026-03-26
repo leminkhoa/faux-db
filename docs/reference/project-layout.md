@@ -1,6 +1,6 @@
 # Project Layout
 
-Kuriboh follows a convention-based layout so commands can infer the project root
+faux-db follows a convention-based layout so commands can infer the project root
 and discover config files without extra flags.
 
 ## Standard layout

@@ -13,7 +13,7 @@ providers/
 └── ecommerce.yml
 ```
 
-Kuriboh loads all top-level YAML files, validates each provider config, and
+faux-db loads all top-level YAML files, validates each provider config, and
 merges them into one registry.
 
 ## Why use providers
@@ -88,14 +88,14 @@ Important:
 
 - this is **not** arbitrary Python
 - this is **not** arbitrary Faker access
-- it is an allowlisted Kuriboh expression syntax
+- it is an allowlisted faux-db expression syntax
 
 At the moment, the code only supports one expression name:
 
 - `random_int(min, max)`
 
 That expression is routed to Faker internally, but users should think of it as a
-Kuriboh-supported built-in. Integer arguments only are supported right now.
+faux-db supported built-in. Integer arguments only are supported right now.
 
 Options:
 

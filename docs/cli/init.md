@@ -1,19 +1,19 @@
-# `kuriboh init`
+# `faux init`
 
-Create a starter Kuriboh project structure.
+Create a starter faux-db project structure.
 
 ## Syntax
 
 ```bash
-kuriboh init [path] [--force]
+faux init [path] [--force]
 ```
 
 ## Examples
 
 ```bash
-kuriboh init
-kuriboh init demo-project
-kuriboh init demo-project --force
+faux init
+faux init demo-project
+faux init demo-project --force
 ```
 
 ## What it creates
@@ -41,6 +41,6 @@ It also writes starter files such as:
 
 ## When to use it
 
-- starting a new Kuriboh project
+- starting a new faux-db project
 - creating an example project for a teammate
 - refreshing starter files in a controlled way with `--force`

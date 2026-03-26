@@ -9,7 +9,7 @@ from .help import CONTEXT_SETTINGS, ROOT_HELP
 
 def _pkg_version() -> str:
     try:
-        return version("kuriboh-faker")
+        return version("faux-db")
     except PackageNotFoundError:
         # Fallback for editable/dev contexts where distribution metadata may be absent.
         return "0+unknown"
@@ -19,9 +19,9 @@ def _pkg_version() -> str:
     context_settings=CONTEXT_SETTINGS,
     help=ROOT_HELP,
 )
-@click.version_option(version=_pkg_version(), prog_name="kuriboh", message=_pkg_version())
+@click.version_option(version=_pkg_version(), prog_name="faux", message=_pkg_version())
 def cli() -> None:
-    """Generate sample data and validate Kuriboh projects."""
+    """Generate sample data and validate faux-db projects."""
 
 
 cli.add_command(init_command)

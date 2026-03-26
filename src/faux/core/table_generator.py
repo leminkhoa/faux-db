@@ -139,7 +139,7 @@ class TableGenerator:
 
         if min_cardinality is not None and rows_count > min_cardinality:
             print(
-                f"[kuriboh] Warning: '{table_name}' requests {rows_count} rows but "
+                f"[faux] Warning: '{table_name}' requests {rows_count} rows but "
                 f"unique column(s) can only produce {min_cardinality} unique values. "
                 f"Reducing rows to {min_cardinality}."
             )

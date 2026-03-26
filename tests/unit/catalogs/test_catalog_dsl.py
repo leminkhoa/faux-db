@@ -1,10 +1,10 @@
-"""Unit tests for the catalog template DSL in ``kuriboh.providers.catalog.dsl``."""
+"""Unit tests for the catalog template DSL in ``faux.providers.catalog.dsl``."""
 
 from __future__ import annotations
 
 import pytest
 
-from kuriboh.providers.catalog.dsl import (
+from faux.providers.catalog.dsl import (
     CatalogSpan,
     apply_spans,
     parse_catalog_spans,

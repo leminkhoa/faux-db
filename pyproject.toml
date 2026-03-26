@@ -1,5 +1,5 @@
 [project]
-name = "kuriboh-faker"
+name = "faux-db"
 version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
@@ -18,8 +18,9 @@ authors = [
 
 [project.optional-dependencies]
 pep8 = [
-    "ruff"
+    "ruff",
 ]
+
 test = [
     "pytest>=9.0.2",
     "pytest-cov>=6.0.0",
@@ -31,7 +32,7 @@ docs = [
 ]
 
 [project.scripts]
-kuriboh = "kuriboh.cli:main"
+faux = "faux.cli:main"
 
 [build-system]
 requires = ["setuptools>=68", "wheel"]
@@ -48,7 +49,7 @@ package-dir = {"" = "src"}
 where = ["src"]
 
 [tool.setuptools.package-data]
-kuriboh = [
+faux = [
     "core/project_init/templates/catalogs/*.yml",
     "core/project_init/templates/functions/*.py",
     "core/project_init/templates/providers/*.yml",

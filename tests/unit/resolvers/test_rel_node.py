@@ -1,5 +1,5 @@
 """
-Tests for :mod:`kuriboh.resolvers.rel_node`.
+Tests for :mod:`faux.resolvers.rel_node`.
 
 Scenarios covered:
 - random strategy picks a value from the source table rows
@@ -15,8 +15,8 @@ from __future__ import annotations
 import pytest
 from faker import Faker
 
-from kuriboh.core.context import GenerationContext
-from kuriboh.resolvers.rel_node import RelResolver
+from faux.core.context import GenerationContext
+from faux.resolvers.rel_node import RelResolver
 
 
 def _ctx(tables: dict | None = None) -> GenerationContext:

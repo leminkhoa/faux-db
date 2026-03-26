@@ -1,5 +1,5 @@
 """
-Tests for :mod:`kuriboh.resolvers.func_node`.
+Tests for :mod:`faux.resolvers.func_node`.
 
 Scenarios covered:
 
@@ -39,16 +39,16 @@ import types
 import pytest
 from faker import Faker
 
-from kuriboh.core.context import GenerationContext
-from kuriboh.core.exceptions import FuncLoadError
-from kuriboh.resolvers.func_node import (
+from faux.core.context import GenerationContext
+from faux.core.exceptions import FuncLoadError
+from faux.resolvers.func_node import (
     FuncResolver,
     _call_with_supported_kwargs,
     _load_callable,
     _resolve_col_refs,
 )
 
-_FAKE_MOD = "_kuriboh_test_funcs"
+_FAKE_MOD = "_faux_test_funcs"
 
 
 def _ctx() -> GenerationContext:
@@ -193,7 +193,7 @@ class TestCallWithSupportedKwargs:
             def __call__(self, x):
                 return x
 
-        monkeypatch.setattr("kuriboh.resolvers.func_node.inspect.signature", lambda _: (_ for _ in ()).throw(ValueError))
+        monkeypatch.setattr("faux.resolvers.func_node.inspect.signature", lambda _: (_ for _ in ()).throw(ValueError))
         assert _call_with_supported_kwargs(_CallableNoSig(), {"x": 11}, _ctx(), {}) == 11
 
 

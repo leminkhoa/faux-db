@@ -1,5 +1,5 @@
 """
-Tests for :mod:`kuriboh.resolvers.provider_node`.
+Tests for :mod:`faux.resolvers.provider_node`.
 
 Scenarios covered:
 
@@ -39,12 +39,12 @@ import pytest
 import polars as pl
 from faker import Faker
 
-from kuriboh.core.context import GenerationContext
-from kuriboh.parsers.schema import ColumnConfig, LookupConfig
-from kuriboh.providers.file_reader import FileReaderProvider
-from kuriboh.providers.random_choice import RandomChoiceProvider
-from kuriboh.providers.registry import ProviderRegistry
-from kuriboh.resolvers.provider_node import ProviderResolver
+from faux.core.context import GenerationContext
+from faux.parsers.schema import ColumnConfig, LookupConfig
+from faux.providers.file_reader import FileReaderProvider
+from faux.providers.random_choice import RandomChoiceProvider
+from faux.providers.registry import ProviderRegistry
+from faux.resolvers.provider_node import ProviderResolver
 
 
 # ---------------------------------------------------------------------------

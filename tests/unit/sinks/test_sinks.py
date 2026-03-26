@@ -7,11 +7,11 @@ from pathlib import Path
 
 import pytest
 
-from kuriboh.parsers.schema import OutputConfig
-from kuriboh.sinks.base import BaseSink
-from kuriboh.sinks.csv_sink import CsvSink
-from kuriboh.sinks.factory import create_sink
-from kuriboh.sinks.json_sink import JsonSink, _json_default
+from faux.parsers.schema import OutputConfig
+from faux.sinks.base import BaseSink
+from faux.sinks.csv_sink import CsvSink
+from faux.sinks.factory import create_sink
+from faux.sinks.json_sink import JsonSink, _json_default
 
 
 class _SinkImpl(BaseSink):

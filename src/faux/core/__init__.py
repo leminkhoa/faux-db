@@ -14,12 +14,12 @@ from .constants import (
     SCHEMAS_DIRNAME,
     SEEDS_DIRNAME,
 )
-from .exceptions import FuncLoadError, KuribohError
+from .exceptions import FauxError, FuncLoadError
 
 __all__ = [
     # exceptions
     "FuncLoadError",
-    "KuribohError",
+    "FauxError",
     # filesystem layout
     "CATALOGS_DIRNAME",
     "FUNCTIONS_DIRNAME",

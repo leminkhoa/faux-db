@@ -4,9 +4,9 @@ import polars as pl
 
 import pytest
 
-from kuriboh.parsers.schema import ColumnConfig, LookupConfig
-from kuriboh.providers.file_reader import FileReaderProvider
-from kuriboh.resolvers.file_reader_context import (
+from faux.parsers.schema import ColumnConfig, LookupConfig
+from faux.providers.file_reader import FileReaderProvider
+from faux.resolvers.file_reader_context import (
     FileReaderSampleSession,
     file_reader_cardinality,
     file_reader_enumerate,

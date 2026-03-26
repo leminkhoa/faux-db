@@ -5,8 +5,8 @@ from types import SimpleNamespace
 import pytest
 from faker import Faker
 
-from kuriboh.core.context import GenerationContext
-from kuriboh.core.engine import run_domain, run_generation
+from faux.core.context import GenerationContext
+from faux.core.engine import run_domain, run_generation
 
 
 def test_run_generation_uses_existing_context_and_base_dir(monkeypatch, tmp_path):
@@ -29,7 +29,7 @@ def test_run_generation_uses_existing_context_and_base_dir(monkeypatch, tmp_path
         def execute(self, plan):
             observed["executed_with"] = plan
 
-    monkeypatch.setattr("kuriboh.core.engine.TableGenerator", _FakeGenerator)
+    monkeypatch.setattr("faux.core.engine.TableGenerator", _FakeGenerator)
 
     run_generation(schema_path, context=context, base_dir=tmp_path)
 
@@ -60,8 +60,8 @@ def test_run_generation_builds_default_context_from_catalogs(monkeypatch, tmp_pa
         def execute(self, plan):
             observed["plan"] = plan
 
-    monkeypatch.setattr("kuriboh.core.engine.load_catalogs", lambda base_dir: {"catalog": {"a": 1}})
-    monkeypatch.setattr("kuriboh.core.engine.TableGenerator", _FakeGenerator)
+    monkeypatch.setattr("faux.core.engine.load_catalogs", lambda base_dir: {"catalog": {"a": 1}})
+    monkeypatch.setattr("faux.core.engine.TableGenerator", _FakeGenerator)
 
     run_generation(schema_path)
 
@@ -82,9 +82,9 @@ def test_run_domain_rejects_duplicate_table_names(monkeypatch, tmp_path):
     (domain / "a.yml").write_text("a: {}\n", encoding="utf-8")
     (domain / "b.yml").write_text("b: {}\n", encoding="utf-8")
 
-    monkeypatch.setattr("kuriboh.core.engine.load_schema", lambda path: {"raw": path.name})
+    monkeypatch.setattr("faux.core.engine.load_schema", lambda path: {"raw": path.name})
     monkeypatch.setattr(
-        "kuriboh.core.engine.validate_schema",
+        "faux.core.engine.validate_schema",
         lambda raw: SimpleNamespace(table_name="users"),
     )
 
@@ -105,18 +105,18 @@ def test_run_domain_executes_tables_in_topological_order_with_shared_context(mon
     }
     calls = []
 
-    monkeypatch.setattr("kuriboh.core.engine.load_schema", lambda path: {"path": path})
+    monkeypatch.setattr("faux.core.engine.load_schema", lambda path: {"path": path})
     monkeypatch.setattr(
-        "kuriboh.core.engine.validate_schema",
+        "faux.core.engine.validate_schema",
         lambda raw: schema_map[raw["path"]],
     )
-    monkeypatch.setattr("kuriboh.core.engine.build_table_dag", lambda schemas: ["users", "orders"])
-    monkeypatch.setattr("kuriboh.core.engine.load_catalogs", lambda base_dir: {"catalog": {}})
+    monkeypatch.setattr("faux.core.engine.build_table_dag", lambda schemas: ["users", "orders"])
+    monkeypatch.setattr("faux.core.engine.load_catalogs", lambda base_dir: {"catalog": {}})
 
     def _record_run_generation(schema_path, context=None, base_dir=None):
         calls.append((schema_path.name, context, base_dir))
 
-    monkeypatch.setattr("kuriboh.core.engine.run_generation", _record_run_generation)
+    monkeypatch.setattr("faux.core.engine.run_generation", _record_run_generation)
 
     run_domain(domain)
 

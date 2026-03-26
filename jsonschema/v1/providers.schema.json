@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://kuriboh.example/schema/v1/providers.schema.json",
-  "title": "Kuriboh providers file (v1)",
+  "$id": "https://faux.example/schema/v1/providers.schema.json",
+  "title": "faux-db providers file (v1)",
   "description": "Providers YAML is a mapping of providerName -> providerConfig. Provider configs are type-discriminated but provider-specific fields vary by provider type; this schema keeps validation intentionally loose while still offering key suggestions for common fields.",
   "type": "object",
   "additionalProperties": {

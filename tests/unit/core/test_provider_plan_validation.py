@@ -6,9 +6,9 @@ from pathlib import Path
 
 import pytest
 
-from kuriboh.core.resolver_factory import validate_provider_columns_for_plan
-from kuriboh.parsers.schema import ColumnConfig
-from kuriboh.providers.registry import build_registry
+from faux.core.resolver_factory import validate_provider_columns_for_plan
+from faux.parsers.schema import ColumnConfig
+from faux.providers.registry import build_registry
 
 
 def test_validate_file_reader_sample_requires_schema_column(tmp_path: Path) -> None:

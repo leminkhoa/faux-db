@@ -1,11 +1,11 @@
-"""Tests for :class:`~kuriboh.providers.expression.ExpressionProvider`."""
+"""Tests for :class:`~faux.providers.expression.ExpressionProvider`."""
 
 from __future__ import annotations
 
 import pytest
 from faker import Faker
 
-from kuriboh.providers.expression import ExpressionProvider, SUPPORTED_EXPRESSIONS
+from faux.providers.expression import ExpressionProvider, SUPPORTED_EXPRESSIONS
 
 
 def test_supported_expressions_lists_random_int():

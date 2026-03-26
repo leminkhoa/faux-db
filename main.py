@@ -1,8 +1,8 @@
 # main.py
 try:
-    from src.kuriboh import cli
+    from src.faux import cli
 except ImportError:
-    print("Could not import cli from src.kuriboh")
+    print("Could not import cli from src.faux")
     cli = None
 
 if __name__ == '__main__':

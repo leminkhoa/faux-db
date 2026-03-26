@@ -1,10 +1,10 @@
 # Installation
 
-Kuriboh requires Python `3.11+`.
+faux-db requires Python `3.11+`.
 
 ## Install the library
 
-Assuming `kuriboh-faker` is published on PyPI, install it into a virtual
+Assuming `faux-db` is published on PyPI, install it into a virtual
 environment:
 
 === "uv"
@@ -12,7 +12,7 @@ environment:
     ```bash
     uv venv
     source .venv/bin/activate
-    uv pip install kuriboh-faker
+    uv pip install faux-db
     ```
 
 === "pip"
@@ -20,19 +20,19 @@ environment:
     ```bash
     python -m venv .venv
     source .venv/bin/activate
-    pip install kuriboh-faker
+    pip install faux-db
     ```
 
 ## Verify the installation
 
 ```bash
-kuriboh --version
-kuriboh --help
+faux --version
+faux --help
 ```
 
 ## What gets installed
 
-- the `kuriboh` CLI
+- the `faux` CLI
 - the Python package used to validate and generate data
 - support for project scaffolding, validation, and generation workflows
 

@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import pytest
 
-from kuriboh.core.dag import build_dag, build_table_dag
-from kuriboh.parsers.schema import ColumnConfig, SchemaFile
+from faux.core.dag import build_dag, build_table_dag
+from faux.parsers.schema import ColumnConfig, SchemaFile
 
 
 def _schema(table_name: str, columns: dict[str, dict]) -> SchemaFile:

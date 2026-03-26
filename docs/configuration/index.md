@@ -1,6 +1,6 @@
 # Configuration Overview
 
-Kuriboh configuration is split across a few directories rather than one large
+faux-db configuration is split across a few directories rather than one large
 file. That makes each concern easier to reason about and easier to reuse.
 
 ## Configuration map
@@ -28,7 +28,7 @@ flowchart LR
 
 1. create or update providers, catalogs, seeds, or functions
 2. reference them from schema files
-3. validate with `kuriboh config validate`
+3. validate with `faux config validate`
 4. generate a single schema or a whole domain
 
 ## Configuration pages

@@ -5,16 +5,16 @@ import polars as pl
 import pytest
 from faker import Faker
 
-from kuriboh.core.resolver_factory import (
+from faux.core.resolver_factory import (
     _resolve_func_path,
     build_resolvers,
     compute_effective_unique,
     validate_provider_columns_for_plan,
 )
-from kuriboh.parsers.schema import ColumnConfig
-from kuriboh.providers.file_reader import FileReaderProvider
-from kuriboh.providers.random_choice import RandomChoiceProvider
-from kuriboh.providers.registry import ProviderRegistry
+from faux.parsers.schema import ColumnConfig
+from faux.providers.file_reader import FileReaderProvider
+from faux.providers.random_choice import RandomChoiceProvider
+from faux.providers.registry import ProviderRegistry
 def _registry(**providers) -> ProviderRegistry:
     reg = ProviderRegistry()
     for name, provider in providers.items():
@@ -134,19 +134,19 @@ def test_build_resolvers_constructs_all_supported_resolver_types(monkeypatch):
     constructed: dict[str, tuple[tuple, dict]] = {}
 
     monkeypatch.setattr(
-        "kuriboh.core.resolver_factory.FakerResolver",
+        "faux.core.resolver_factory.FakerResolver",
         lambda *args, **kwargs: constructed.setdefault("id", (args, kwargs)),
     )
     monkeypatch.setattr(
-        "kuriboh.core.resolver_factory.FuncResolver",
+        "faux.core.resolver_factory.FuncResolver",
         lambda *args, **kwargs: constructed.setdefault("country", (args, kwargs)),
     )
     monkeypatch.setattr(
-        "kuriboh.core.resolver_factory.ProviderResolver",
+        "faux.core.resolver_factory.ProviderResolver",
         lambda *args, **kwargs: constructed.setdefault("nickname", (args, kwargs)),
     )
     monkeypatch.setattr(
-        "kuriboh.core.resolver_factory.RelResolver",
+        "faux.core.resolver_factory.RelResolver",
         lambda *args, **kwargs: constructed.setdefault("ref_id", (args, kwargs)),
     )
 

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import csv
 
-from kuriboh.core.engine import run_generation
+from faux.core.engine import run_generation
 
 
 def test_basic_faker_generation_writes_csv(basic_faker_work_root, basic_faker_schema_path, monkeypatch):

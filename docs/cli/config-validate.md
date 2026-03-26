@@ -1,19 +1,19 @@
-# `kuriboh config validate`
+# `faux config validate`
 
-Validate a Kuriboh project without generating output files.
+Validate a faux-db project without generating output files.
 
 ## Syntax
 
 ```bash
-kuriboh config validate [path]
+faux config validate [path]
 ```
 
 ## Examples
 
 ```bash
-kuriboh config validate
-kuriboh config validate .
-kuriboh config validate ./demo-project
+faux config validate
+faux config validate .
+faux config validate ./demo-project
 ```
 
 ## What it checks

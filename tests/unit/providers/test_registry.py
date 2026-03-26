@@ -1,12 +1,12 @@
-"""Tests for :mod:`kuriboh.providers.registry`."""
+"""Tests for :mod:`faux.providers.registry`."""
 
 from __future__ import annotations
 
 import pytest
 from pathlib import Path
 
-import kuriboh.providers.registry as registry_mod
-from kuriboh.providers.registry import build_registry
+import faux.providers.registry as registry_mod
+from faux.providers.registry import build_registry
 
 
 def test_build_registry_random_choice(tmp_path: Path) -> None:

@@ -18,9 +18,9 @@ from ..help import CONTEXT_SETTINGS, INIT_HELP
 )
 @click.option("--force", is_flag=True, help="Overwrite starter files if they already exist.")
 def init_command(path: Path, force: bool) -> None:
-    """Create a starter Kuriboh project structure."""
+    """Create a starter faux-db project structure."""
     try:
-        with console.status("Creating starter Kuriboh project..."):
+        with console.status("Creating starter faux-db project..."):
             summary = init_project(path, force=force)
     except Exception as exc:
         raise click.ClickException(str(exc)) from exc

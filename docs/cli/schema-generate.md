@@ -1,18 +1,18 @@
-# `kuriboh schema generate`
+# `faux schema generate`
 
 Generate data from a schema file or a domain directory.
 
 ## Syntax
 
 ```bash
-kuriboh schema generate <path>
+faux schema generate <path>
 ```
 
 ## Examples
 
 ```bash
-kuriboh schema generate schemas/example/users.yml
-kuriboh schema generate schemas/example
+faux schema generate schemas/example/users.yml
+faux schema generate schemas/example
 ```
 
 ## File vs directory behavior
@@ -38,5 +38,5 @@ Pass a domain directory when:
 
 ## Related command
 
-Use [`kuriboh config validate`](config-validate.md) before generation when you
+Use [`faux config validate`](config-validate.md) before generation when you
 want to catch configuration issues first.

@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://kuriboh.example/schema/v1/schema-file.schema.json",
-  "title": "Kuriboh schema file (v1)",
+  "$id": "https://faux.example/schema/v1/schema-file.schema.json",
+  "title": "faux-db schema file (v1)",
   "type": "object",
   "minProperties": 1,
   "maxProperties": 1,

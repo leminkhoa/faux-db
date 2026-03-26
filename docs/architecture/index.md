@@ -1,6 +1,6 @@
 # System Overview
 
-Kuriboh is a configuration-driven data generation engine. The project structure
+faux-db is a configuration-driven data generation engine. The project structure
 is intentionally split so each concern has one home:
 
 - `schemas/` describes tables and columns

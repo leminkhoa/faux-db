@@ -1,9 +1,9 @@
 """
-Helpers for :class:`~kuriboh.providers.file_reader.FileReaderProvider` columns:
+Helpers for :class:`~faux.providers.file_reader.FileReaderProvider` columns:
 lookup key resolution, sample session state, and spec builders.
 
-The typed spec dataclasses live in :mod:`~kuriboh.providers.file_reader_specs`
-so both this module and :mod:`~kuriboh.providers.file_reader` can import them
+The typed spec dataclasses live in :mod:`~faux.providers.file_reader_specs`
+so both this module and :mod:`~faux.providers.file_reader` can import them
 without a circular dependency.
 """
 
