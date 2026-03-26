@@ -1,7 +1,7 @@
 [project]
 name = "faux-db"
 version = "0.1.0"
-description = "Configuration-driven fake data generation built on top of faker (YAML schemas, catalogs, providers, and relational table references via `type: rel`)."
+description = "Configuration-driven fake data generation built on top of faker."
 readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
