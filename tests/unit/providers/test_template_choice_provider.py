@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any
 
 import pytest
 
@@ -10,7 +10,7 @@ from kuriboh.providers.template_choice import TemplateChoiceProvider
 
 
 # Minimal catalogs: stem "demo" with nested lists for path demo.a / demo.b
-def _demo_catalogs() -> Dict[str, Any]:
+def _demo_catalogs() -> dict[str, Any]:
     return {
         "demo": {
             "a": ["x", "y"],

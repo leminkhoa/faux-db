@@ -18,7 +18,7 @@ _SINK_REGISTRY: dict[str, type[BaseSink]] = {
 }
 
 
-def create_sink(output_cfg: "OutputConfig", base_dir: Path | None = None) -> BaseSink:
+def create_sink(output_cfg: OutputConfig, base_dir: Path | None = None) -> BaseSink:
     """Create a sink for the given output configuration."""
     output_path = Path(output_cfg.filepath)
     # Relative paths would otherwise resolve against cwd; anchor them to the project root

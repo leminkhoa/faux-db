@@ -32,6 +32,7 @@ FuncResolver (end-to-end)
 
 from __future__ import annotations
 
+import os.path
 import sys
 import types
 
@@ -74,7 +75,6 @@ def _cleanup():
 
 class TestLoadCallable:
     def test_loads_valid_stdlib_callable(self):
-        import os.path
         fn = _load_callable("os.path.join")
         assert fn is os.path.join
 

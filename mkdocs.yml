@@ -1,0 +1,88 @@
+site_name: Kuriboh Faker
+site_description: Configuration-driven fake data generation with YAML, providers, catalogs, and domain-aware execution.
+site_author: Khoa Le Minh
+
+nav:
+  - Overview: index.md
+  - Getting Started:
+    - Overview: getting-started/index.md
+    - Installation: getting-started/installation.md
+    - Quickstart: getting-started/quickstart.md
+  - Architecture:
+    - System Overview: architecture/index.md
+    - Generation Flow: architecture/generation-flow.md
+  - Configuration:
+    - Overview: configuration/index.md
+    - Catalogs: configuration/catalogs.md
+    - Providers: configuration/providers.md
+    - Schemas: configuration/schemas.md
+    - Seeds: configuration/seeds.md
+    - Functions: configuration/functions.md
+  - CLI:
+    - Overview: cli/index.md
+    - init: cli/init.md
+    - config validate: cli/config-validate.md
+    - schema generate: cli/schema-generate.md
+  - Reference:
+    - Project Layout: reference/project-layout.md
+    - Configuration Cheatsheet: reference/configuration-cheatsheet.md
+
+theme:
+  name: material
+  logo: assets/images/logo-transparent.png
+  favicon: assets/images/logo-transparent.png
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - search.highlight
+    - search.suggest
+    - content.code.copy
+    - toc.follow
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+
+extra_css:
+  - assets/stylesheets/extra.css
+extra_javascript:
+  - https://unpkg.com/mermaid@10/dist/mermaid.min.js
+  - assets/javascripts/mermaid.js
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+plugins:
+  - search
+
+validation:
+  omitted_files: warn
+  absolute_links: relative_to_docs
+  unrecognized_links: warn

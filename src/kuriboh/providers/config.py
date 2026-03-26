@@ -15,7 +15,7 @@ class RandomChoiceProviderConfig(BaseModel):
     )
 
     @model_validator(mode="after")
-    def validate_random_choice(self) -> "RandomChoiceProviderConfig":
+    def validate_random_choice(self) -> RandomChoiceProviderConfig:
         if not self.choices:
             raise ValueError("choices must not be empty")
         if self.weights is not None and len(self.weights) != len(self.choices):
@@ -36,7 +36,7 @@ class FileReaderProviderConfig(BaseModel):
     on_duplicate_key: Literal["first", "last", "error"] = "first"
 
     @model_validator(mode="after")
-    def require_columns(self) -> "FileReaderProviderConfig":
+    def require_columns(self) -> FileReaderProviderConfig:
         if self.loaded_columns is not None:
             if len(self.loaded_columns) == 0:
                 raise ValueError("loaded_columns must not be empty")
@@ -65,7 +65,7 @@ class ExpressionProviderConfig(BaseModel):
     )
 
     @model_validator(mode="after")
-    def validate_expression(self) -> "ExpressionProviderConfig":
+    def validate_expression(self) -> ExpressionProviderConfig:
         if not self.exp.strip():
             raise ValueError("exp must not be empty")
         return self

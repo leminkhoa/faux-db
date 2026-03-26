@@ -1,4 +1,5 @@
-"""Tests for :mod:`kuriboh.parsers.schema`.
+"""
+Tests for :mod:`kuriboh.parsers.schema`.
 
 Covers:
 - SampleConfig defaults and validation

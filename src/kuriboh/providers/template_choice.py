@@ -71,8 +71,8 @@ class TemplateChoiceProvider(BaseProvider):
     def enumerate_all(self, catalogs: dict[str, Any]) -> list[Any] | None:
         results: dict[str, None] = {}
 
-        for template_idx, (template, spans) in enumerate(
-            zip(self._templates, self._spans)
+        for _template_idx, (template, spans) in enumerate(
+            zip(self._templates, self._spans, strict=True)
         ):
             if not spans:
                 results[template] = None
@@ -84,7 +84,7 @@ class TemplateChoiceProvider(BaseProvider):
 
             for combo in itertools.product(*slot_value_sets):
                 result = template
-                for span, value in reversed(list(zip(spans, combo))):
+                for span, value in reversed(list(zip(spans, combo, strict=True))):
                     result = result[: span.start] + value + result[span.end :]
                 results[result] = None
 

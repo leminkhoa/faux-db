@@ -25,7 +25,7 @@ from __future__ import annotations
 import random
 import re
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any
 
 # ──────────────────────────────────────────
 # Regex: full {{ … }} span
@@ -49,18 +49,18 @@ class CatalogSpan:
 
     start: int
     end: int
-    path: List[str]
+    path: list[str]
     pick: str
-    default: Optional[str]
+    default: str | None
 
 
-def parse_catalog_spans(template: str) -> List[CatalogSpan]:
+def parse_catalog_spans(template: str) -> list[CatalogSpan]:
     """
     Return all CatalogSpan objects found in *template*, left-to-right.
     Raises ValueError for malformed or ambiguous spans (multiple pick
     filters, missing path, etc.).
     """
-    spans: List[CatalogSpan] = []
+    spans: list[CatalogSpan] = []
     for m in _SPAN_RE.finditer(template):
         raw_path = m.group(1) if m.group(1) is not None else m.group(2)
         pipe_str = m.group(3) or ""
@@ -73,8 +73,8 @@ def parse_catalog_spans(template: str) -> List[CatalogSpan]:
 
         tokens = [t.strip() for t in pipe_str.split("|") if t.strip()]
 
-        default_value: Optional[str] = None
-        remaining: List[str] = []
+        default_value: str | None = None
+        remaining: list[str] = []
         for tok in tokens:
             dm = _DEFAULT_RE.fullmatch(tok)
             if dm:
@@ -114,7 +114,7 @@ def parse_catalog_spans(template: str) -> List[CatalogSpan]:
     return spans
 
 
-def _deep_get(catalogs: Dict[str, Any], path: List[str]) -> List[Any]:
+def _deep_get(catalogs: dict[str, Any], path: list[str]) -> list[Any]:
     stem, *keys = path
     node: Any = catalogs.get(stem)
     for key in keys:
@@ -126,13 +126,13 @@ def _deep_get(catalogs: Dict[str, Any], path: List[str]) -> List[Any]:
     return []
 
 
-CycleKey = Tuple[int, int]
+CycleKey = tuple[int, int]
 
 
 def resolve_span(
     span: CatalogSpan,
-    catalogs: Dict[str, Any],
-    cycle_state: Dict[CycleKey, int],
+    catalogs: dict[str, Any],
+    cycle_state: dict[CycleKey, int],
     template_idx: int,
     slot_idx: int,
     rng: random.Random | None = None,
@@ -163,13 +163,13 @@ def resolve_span(
 
 def apply_spans(
     template: str,
-    spans: List[CatalogSpan],
-    catalogs: Dict[str, Any],
-    cycle_state: Dict[CycleKey, int],
+    spans: list[CatalogSpan],
+    catalogs: dict[str, Any],
+    cycle_state: dict[CycleKey, int],
     template_idx: int,
     rng: random.Random | None = None,
 ) -> str:
-    parts: List[str] = []
+    parts: list[str] = []
     cursor = 0
     for slot_idx, span in enumerate(spans):
         parts.append(template[cursor : span.start])
@@ -183,8 +183,8 @@ def apply_spans(
 
 def span_values_for_enumeration(
     span: CatalogSpan,
-    catalogs: Dict[str, Any],
-) -> List[str]:
+    catalogs: dict[str, Any],
+) -> list[str]:
     values = _deep_get(catalogs, span.path)
 
     if not values:

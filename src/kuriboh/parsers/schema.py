@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import re
-from typing import Any, Literal, Mapping
+from typing import Any, Literal
+from collections.abc import Mapping
 
 from pydantic import BaseModel, Field, RootModel, ValidationError, field_validator, model_validator
 
@@ -21,7 +22,7 @@ from ..core import ColumnGenType, RelStrategy
 COL_REF_PATTERN = re.compile(r"\{\{\s*col\(\s*['\"](\w+)['\"]\s*\)\s*\}\}")
 
 
-def get_col_refs(col_cfg: "ColumnConfig") -> list[str]:
+def get_col_refs(col_cfg: ColumnConfig) -> list[str]:
     """Return all column names referenced via {{ col(...) }} in this config."""
     refs: list[str] = []
     for v in (col_cfg.params or {}).values():
@@ -64,7 +65,7 @@ class LookupConfig(BaseModel):
         return v
 
     @model_validator(mode="after")
-    def key_lengths(self) -> "LookupConfig":
+    def key_lengths(self) -> LookupConfig:
         kf = self.key_from
         parts = [kf] if isinstance(kf, str) else kf
         if len(self.key_columns) != len(parts):
@@ -90,7 +91,7 @@ class ColumnConfig(BaseModel):
     lookup: LookupConfig | None = None
 
     @model_validator(mode="after")
-    def check_required_fields(self) -> "ColumnConfig":
+    def check_required_fields(self) -> ColumnConfig:
         if self.type == COLUMN_GEN_TYPE__FAKER and not self.method:
             raise ValueError("Faker column must define 'method'")
         if self.type == COLUMN_GEN_TYPE__REL:

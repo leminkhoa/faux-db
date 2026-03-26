@@ -8,19 +8,34 @@ dependencies = [
     "faker==40.11.0",
     "pyyaml==6.0.3",
     "pydantic==2.12.5",
-    "polars==1.39.3",
+    "polars<=1.39.3",
     "click",
     "rich"
 ]
+authors = [
+    { name = "Khoa, Le Minh", email = "leminkhoa@gmail.com" },
+]
 
-[dependency-groups]
-dev = [
+[project.optional-dependencies]
+pep8 = [
+    "ruff"
+]
+test = [
     "pytest>=9.0.2",
     "pytest-cov>=6.0.0",
+]
+docs = [
+    "mkdocs==1.6.1",
+    "mkdocs-material",
+    "pymdown-extensions",
 ]
 
 [project.scripts]
 kuriboh = "kuriboh.cli:main"
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [tool.pytest.ini_options]
 pythonpath = ["src", "."]
@@ -40,6 +55,39 @@ kuriboh = [
     "core/project_init/templates/schemas/example/*.yml",
 ]
 
-[build-system]
-requires = ["setuptools>=68", "wheel"]
-build-backend = "setuptools.build_meta"
+[tool.coverage.report]
+exclude_lines = [
+    "no cov",
+    "if __name__ == .__main__.:",
+    "__repr__",
+    "if TYPE_CHECKING:"
+]
+
+[tool.black]
+line-length = 100
+skip-string-normalization = true
+
+[tool.isort]
+profile = "black"
+line_length = 100
+
+
+[tool.ruff]
+# For ruff rules, refer to https://docs.astral.sh/ruff/rules/
+
+[tool.ruff.lint]
+select = [
+    "F", "W", "E", "UP", "YTT", "C4", "DTZ", "FA", "ISC", "PIE", "T20", "RSE", "TCH",
+    "B002", "B003", "B005", "B007", "B009", "B012", "B013", "B014", "B015", "B018", "B020", "B021", "B023", "B026", "B033", "B034", "B905",
+    "COM818",
+    "D200", "D201", "D202", "D204", "D207", "D208", "D209", "D210", "D211", "D213", "D214", "D300", "D301", "D400", "D402", "D403", "D405", "D412", "D414", "D415", "D416", "D417", "D419",
+    "PERF101",
+    "G010", "PGH004", "PGH005",
+    "FLY002",
+    "PLC", "PLE", "PLR0124", "PLR0133", "PLR0206", "PLR0402", "PLR1722", "PLW0120", "PLW0127", "PLW0129", "PLW0131", "PLW0406", "PLW0602", "PLW0603", "PLW0711",
+    "RUF001", "RUF005", "RUF007", "RUF010", "RUF013", "RUF100", "RUF200",
+    "SIM101", "SIM107", "SIM201", "SIM202", "SIM208", "SIM210", "SIM211", "SIM300", "SIM401", "SIM910",
+]
+# TC001–TC003 (flake8-type-checking): moving imports to TYPE_CHECKING is often wrong when names are used at runtime (Path, Faker, etc.).
+ignore = ["E501", "E731", "T201", "W293", "C408", "DTZ001", "F811", "TC001", "TC002", "TC003"]
+

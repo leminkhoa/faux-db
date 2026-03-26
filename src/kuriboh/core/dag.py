@@ -48,7 +48,7 @@ def build_dag(columns_cfg: dict[str, ColumnConfig]) -> list[str]:
     all_cols = list(columns_cfg.keys())
 
     adjacency: dict[str, list[str]] = {col: [] for col in all_cols}
-    in_degree: dict[str, int] = {col: 0 for col in all_cols}
+    in_degree: dict[str, int] = dict.fromkeys(all_cols, 0)
 
     for col_name, col_cfg in columns_cfg.items():
         for dep_col in _collect_deps(col_name, col_cfg, columns_cfg):
@@ -84,7 +84,7 @@ def build_table_dag(schemas: dict[str, SchemaFile]) -> list[str]:
     """
     all_tables = list(schemas.keys())
     adjacency: dict[str, list[str]] = {t: [] for t in all_tables}
-    in_degree: dict[str, int] = {t: 0 for t in all_tables}
+    in_degree: dict[str, int] = dict.fromkeys(all_tables, 0)
 
     for table_name, schema_file in schemas.items():
         for col_cfg in schema_file.table.columns.values():

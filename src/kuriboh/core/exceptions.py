@@ -11,7 +11,6 @@ from __future__ import annotations
 class KuribohError(Exception):
     """Base exception for all kuriboh-specific errors."""
 
-    pass
 
 
 class FuncLoadError(KuribohError):

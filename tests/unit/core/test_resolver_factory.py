@@ -1,17 +1,10 @@
 from __future__ import annotations
 
-from pathlib import Path
 
 import polars as pl
 import pytest
 from faker import Faker
 
-from kuriboh.core import (
-    COLUMN_GEN_TYPE__FAKER,
-    COLUMN_GEN_TYPE__FUNC,
-    COLUMN_GEN_TYPE__PROVIDER,
-    COLUMN_GEN_TYPE__REL,
-)
 from kuriboh.core.resolver_factory import (
     _resolve_func_path,
     build_resolvers,

@@ -7,7 +7,8 @@ from .base import BaseProvider
 
 
 class RandomChoiceProvider(BaseProvider):
-    """Provider that returns one item from a fixed sequence of choices.
+    """
+    Provider that returns one item from a fixed sequence of choices.
 
     Unweighted mode uses :func:`random.choice` (or the seeded RNG's
     equivalent). When ``weights`` is provided and non-empty,

@@ -57,7 +57,7 @@ class ProviderResolver(BaseResolver):
                 return values
         return provider.enumerate_all(catalogs)
 
-    def _generate(self, context: "GenerationContext", row: dict[str, Any]) -> Any:
+    def _generate(self, context: GenerationContext, row: dict[str, Any]) -> Any:
         provider = self._registry.get(self._target)
         base_ctx = context.to_provider_context(row)
 
