@@ -2,23 +2,23 @@ store:
   rows: 30
   columns:
     id:
-      type: "$faker"
+      type: "faker"
       method: "uuid4"
       unique: true
     store_code:
-      type: "$faker"
+      type: "faker"
       method: "bothify"
       params:
         text: "ST-########"
       unique: true
     region:
-      type: "$provider"
+      type: "provider"
       target: "StoreRegionProvider"
     tagline:
-      type: "$provider"
+      type: "provider"
       target: "StoreTaglineProvider"
     created_at:
-      type: "$faker"
+      type: "faker"
       method: "date_between"
       params:
         start_date: "-1y"

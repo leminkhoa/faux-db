@@ -29,7 +29,7 @@ class ProviderResolver(BaseResolver):
         pk_cache_key: str | None = None,
     ) -> None:
         if col_cfg.type != COLUMN_GEN_TYPE__PROVIDER or not col_cfg.target:
-            raise ValueError("ProviderResolver requires a $provider column with 'target'")
+            raise ValueError("ProviderResolver requires a provider column with 'target'")
         super().__init__(
             bind_to_col=bind_to_col,
             cache_key=col_cfg.target,

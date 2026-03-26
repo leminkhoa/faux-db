@@ -2,24 +2,24 @@ customer:
   rows: 30
   columns:
     id:
-      type: "$faker"
+      type: "faker"
       method: "uuid4"
       unique: true
     email:
-      type: "$faker"
+      type: "faker"
       method: "email"
       bind_to: id
     segment:
-      type: "$provider"
+      type: "provider"
       target: "CustomerSegmentProvider"
     welcome_line:
-      type: "$provider"
+      type: "provider"
       target: "CustomerWelcomeProvider"
     service_tier:
-      type: "$provider"
+      type: "provider"
       target: "NicknameProvider"
     created_at:
-      type: "$faker"
+      type: "faker"
       method: "date_between"
       params:
         start_date: "-1y"

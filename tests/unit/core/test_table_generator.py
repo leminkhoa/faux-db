@@ -97,7 +97,7 @@ def test_plan_builds_plan_and_preinits_resolvers(monkeypatch):
     context = _ctx()
     gen = TableGenerator(Path("/tmp/users.yml"), Path("/tmp/base"), context)
     output = OutputConfig(format="csv", filepath="./out.csv")
-    columns_cfg = {"id": ColumnConfig(type="$faker", method="uuid4")}
+    columns_cfg = {"id": ColumnConfig(type="faker", method="uuid4")}
     schema_model = SimpleNamespace(
         table_name="users",
         table=SimpleNamespace(rows=4, columns=columns_cfg, output=output),

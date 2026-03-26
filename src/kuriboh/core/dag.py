@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from ..parsers.schema import ColumnConfig, SchemaFile, get_col_refs
+from .constants import COLUMN_GEN_TYPE__REL
 
 
 def _collect_deps(
@@ -9,7 +10,7 @@ def _collect_deps(
     columns_cfg: dict[str, ColumnConfig],
 ) -> set[str]:
     """
-    Collect all declared dependencies for a column (bind_to + $col refs),
+    Collect all declared dependencies for a column (bind_to + column reference refs),
     deduplicated to avoid double-counting the same edge.
 
     Uses the full columns_cfg dict for O(1) membership checks.
@@ -27,7 +28,7 @@ def _collect_deps(
     for ref_col in get_col_refs(col_cfg):
         if ref_col not in columns_cfg:
             raise ValueError(
-                f"Column '{col_name}' references $col('{ref_col}') "
+                f"Column '{col_name}' references {{ col('{ref_col}') }} "
                 f"but '{ref_col}' is not defined in this table"
             )
         deps.add(ref_col)
@@ -37,10 +38,10 @@ def _collect_deps(
 
 def build_dag(columns_cfg: dict[str, ColumnConfig]) -> list[str]:
     """
-    Build a column-level dependency graph from bind_to and $col() declarations
+    Build a column-level dependency graph from bind_to and column-reference declarations
     and return a topologically sorted list of column names (Kahn's algorithm).
 
-    Both bind_to and $col(...) in params create a "must come before" edge.
+    Both bind_to and col() references in params create a "must come before" edge.
     Raises ValueError if a referenced column does not exist or if circular
     dependencies are detected.
     """
@@ -87,7 +88,7 @@ def build_table_dag(schemas: dict[str, SchemaFile]) -> list[str]:
 
     for table_name, schema_file in schemas.items():
         for col_cfg in schema_file.table.columns.values():
-            if col_cfg.type != "$rel" or not col_cfg.target:
+            if col_cfg.type != COLUMN_GEN_TYPE__REL or not col_cfg.target:
                 continue
             ref_table = col_cfg.target.split(".", 1)[0]
             if ref_table not in schemas:

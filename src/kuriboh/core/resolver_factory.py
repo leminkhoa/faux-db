@@ -74,7 +74,7 @@ def validate_provider_columns_for_plan(
     columns_cfg: dict[str, ColumnConfig],
 ) -> None:
     """
-    Validate $provider columns against concrete provider implementations (e.g. file_reader
+    Validate provider columns against concrete provider implementations (e.g. file_reader
     loaded_columns vs schema column / lookup declarations).
     """
     for col_name, col_cfg in columns_cfg.items():

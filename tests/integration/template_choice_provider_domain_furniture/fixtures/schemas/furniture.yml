@@ -2,16 +2,16 @@ furniture:
   rows: 5
   columns:
     label_first:
-      type: "$provider"
+      type: "provider"
       target: "FirstFilterProvider"
     label_random:
-      type: "$provider"
+      type: "provider"
       target: "RandomFilterProvider"
     label_cycle:
-      type: "$provider"
+      type: "provider"
       target: "CycleFilterProvider"
     label_default:
-      type: "$provider"
+      type: "provider"
       target: "DefaultFilterProvider"
   output:
     format: csv

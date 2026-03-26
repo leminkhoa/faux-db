@@ -13,23 +13,28 @@ from ..core import (
 )
 from ..core import ColumnGenType, RelStrategy
 
-# Matches $col(column_name) in param string values.
+# Matches column reference templates in param string values.
+# Supported syntax (template-only for now):
+# - {{ col("column_name") }}
+# - {{ col('column_name') }}
 # Shared with dag.py (for DAG edge extraction) and func_node.py (for runtime resolution).
-COL_REF_PATTERN = re.compile(r"\$col\((\w+)\)")
+COL_REF_PATTERN = re.compile(r"\{\{\s*col\(\s*['\"](\w+)['\"]\s*\)\s*\}\}")
 
 
 def get_col_refs(col_cfg: "ColumnConfig") -> list[str]:
-    """Return all column names referenced via $col(...) in this column's config."""
-    refs: list[str] = [
-        m for v in (col_cfg.params or {}).values() if isinstance(v, str)
-        for m in COL_REF_PATTERN.findall(v)
-    ]
+    """Return all column names referenced via {{ col(...) }} in this config."""
+    refs: list[str] = []
+    for v in (col_cfg.params or {}).values():
+        if not isinstance(v, str):
+            continue
+        for m in COL_REF_PATTERN.finditer(v):
+            refs.append(m.group(1))
 
     if col_cfg.type == COLUMN_GEN_TYPE__PROVIDER and col_cfg.lookup is not None:
         key_from = col_cfg.lookup.key_from
         parts = [key_from] if isinstance(key_from, str) else key_from
         for part in parts:
-            refs.extend(COL_REF_PATTERN.findall(part))
+            refs.append(part)
 
     return refs
 
@@ -53,6 +58,8 @@ class LookupConfig(BaseModel):
     @classmethod
     def normalize_key_from(cls, v: Any) -> str | list[str]:
         if not isinstance(v, (str, list)):
+            raise TypeError("key_from must be a string or list of strings")
+        if isinstance(v, list) and not all(isinstance(x, str) for x in v):
             raise TypeError("key_from must be a string or list of strings")
         return v
 
@@ -134,8 +141,9 @@ def validate_schema(schema: Mapping[str, Any]) -> SchemaFile:
     """
     Validate a raw YAML-loaded schema and return a typed model.
 
-    Beyond Pydantic field validation this also verifies that every $col(name)
-    reference points to a real column defined in the same table.
+    Beyond Pydantic field validation this also verifies that every column reference
+    (e.g. {{ col("name") }}) points to a real column defined in the
+    same table.
     """
     try:
         schema_model = SchemaFile.model_validate(schema)
@@ -149,7 +157,7 @@ def validate_schema(schema: Mapping[str, Any]) -> SchemaFile:
         for ref_col in get_col_refs(col_cfg):
             if ref_col not in col_names:
                 raise ValueError(
-                    f"Column '{col_name}': $col('{ref_col}') references "
+                    f"Column '{col_name}': {{ col('{ref_col}') }} references "
                     f"unknown column '{ref_col}'"
                 )
 

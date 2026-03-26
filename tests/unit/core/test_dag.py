@@ -20,9 +20,9 @@ def _schema(table_name: str, columns: dict[str, dict]) -> SchemaFile:
 
 def test_build_dag_orders_bind_to_and_col_refs_before_dependents():
     columns = {
-        "id": ColumnConfig(type="$faker", method="uuid4"),
-        "full_name": ColumnConfig(type="$func", func="mod.fn", params={"id": "$col(id)"}),
-        "label": ColumnConfig(type="$faker", method="name", bind_to="id"),
+        "id": ColumnConfig(type="faker", method="uuid4"),
+        "full_name": ColumnConfig(type="func", func="mod.fn", params={"id": '{{ col("id") }}'}),
+        "label": ColumnConfig(type="faker", method="name", bind_to="id"),
     }
 
     order = build_dag(columns)
@@ -33,12 +33,12 @@ def test_build_dag_orders_bind_to_and_col_refs_before_dependents():
 
 def test_build_dag_deduplicates_same_dependency_from_bind_to_and_col_ref():
     columns = {
-        "id": ColumnConfig(type="$faker", method="uuid4"),
+        "id": ColumnConfig(type="faker", method="uuid4"),
         "name": ColumnConfig(
-            type="$func",
+            type="func",
             func="mod.fn",
             bind_to="id",
-            params={"source": "$col(id)"},
+            params={"source": '{{ col("id") }}'},
         ),
     }
 
@@ -47,7 +47,7 @@ def test_build_dag_deduplicates_same_dependency_from_bind_to_and_col_ref():
 
 def test_build_dag_rejects_missing_bind_to_column():
     columns = {
-        "name": ColumnConfig(type="$faker", method="name", bind_to="missing"),
+        "name": ColumnConfig(type="faker", method="name", bind_to="missing"),
     }
 
     with pytest.raises(ValueError, match="bind_to 'missing'"):
@@ -56,17 +56,17 @@ def test_build_dag_rejects_missing_bind_to_column():
 
 def test_build_dag_rejects_missing_col_ref_column():
     columns = {
-        "name": ColumnConfig(type="$func", func="mod.fn", params={"x": "$col(missing)"}),
+        "name": ColumnConfig(type="func", func="mod.fn", params={"x": '{{ col("missing") }}'}),
     }
 
-    with pytest.raises(ValueError, match="\\$col\\('missing'\\)"):
+    with pytest.raises(ValueError, match="col\\('missing'\\)"):
         build_dag(columns)
 
 
 def test_build_dag_detects_cycle():
     columns = {
-        "a": ColumnConfig(type="$func", func="mod.fn", params={"x": "$col(b)"}),
-        "b": ColumnConfig(type="$func", func="mod.fn", params={"x": "$col(a)"}),
+        "a": ColumnConfig(type="func", func="mod.fn", params={"x": '{{ col("b") }}'}),
+        "b": ColumnConfig(type="func", func="mod.fn", params={"x": '{{ col("a") }}'}),
     }
 
     with pytest.raises(ValueError, match="Circular dependency"):
@@ -75,8 +75,8 @@ def test_build_dag_detects_cycle():
 
 def test_build_table_dag_orders_rel_dependencies():
     schemas = {
-        "users": _schema("users", {"id": {"type": "$faker", "method": "uuid4"}}),
-        "orders": _schema("orders", {"user_id": {"type": "$rel", "target": "users.id"}}),
+        "users": _schema("users", {"id": {"type": "faker", "method": "uuid4"}}),
+        "orders": _schema("orders", {"user_id": {"type": "rel", "target": "users.id"}}),
     }
 
     assert build_table_dag(schemas) == ["users", "orders"]
@@ -84,7 +84,7 @@ def test_build_table_dag_orders_rel_dependencies():
 
 def test_build_table_dag_rejects_unknown_rel_table():
     schemas = {
-        "orders": _schema("orders", {"user_id": {"type": "$rel", "target": "users.id"}}),
+        "orders": _schema("orders", {"user_id": {"type": "rel", "target": "users.id"}}),
     }
 
     with pytest.raises(ValueError, match="not in the domain"):
@@ -93,7 +93,7 @@ def test_build_table_dag_rejects_unknown_rel_table():
 
 def test_build_table_dag_ignores_self_reference():
     schemas = {
-        "users": _schema("users", {"manager_id": {"type": "$rel", "target": "users.id"}}),
+        "users": _schema("users", {"manager_id": {"type": "rel", "target": "users.id"}}),
     }
 
     assert build_table_dag(schemas) == ["users"]
@@ -101,8 +101,8 @@ def test_build_table_dag_ignores_self_reference():
 
 def test_build_table_dag_detects_table_cycle():
     schemas = {
-        "users": _schema("users", {"order_id": {"type": "$rel", "target": "orders.id"}}),
-        "orders": _schema("orders", {"user_id": {"type": "$rel", "target": "users.id"}}),
+        "users": _schema("users", {"order_id": {"type": "rel", "target": "orders.id"}}),
+        "orders": _schema("orders", {"user_id": {"type": "rel", "target": "users.id"}}),
     }
 
     with pytest.raises(ValueError, match="Circular dependency"):

@@ -20,7 +20,7 @@ def test_validate_file_reader_sample_requires_schema_column(tmp_path: Path) -> N
     )
     columns = {
         "x": ColumnConfig(
-            type="$provider",
+            type="provider",
             target="P",
             mode="sample",
             column=None,
@@ -37,12 +37,12 @@ def test_validate_non_file_lookup_rejected(tmp_path: Path) -> None:
     )
     columns = {
         "x": ColumnConfig(
-            type="$provider",
+            type="provider",
             target="T",
             mode="lookup",
             lookup={
                 "key_columns": ["id"],
-                "key_from": "$col(id)",
+                "key_from": "id",
                 "value_column": "v",
             },
         )

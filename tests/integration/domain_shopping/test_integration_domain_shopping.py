@@ -12,9 +12,9 @@ ERD-style ``$rel`` graph::
                               │
                          (fan-in: txn + product)
 
-Exercises: ``$faker`` (uuid, email, ints, pystr, ``date_between``), ``$rel`` (random / sequential),
-``$provider`` (random_choice, template_choice, file_reader sample + lookup),
-``$func`` (with ``context``), ``bind_to`` (e.g. email and title keyed by ``id``), ``unique``, and catalogs.
+Exercises: ``faker`` (uuid, email, ints, pystr, ``date_between``), ``rel`` (random / sequential),
+``provider`` (random_choice, template_choice, file_reader sample + lookup),
+``func`` (with ``context``), ``bind_to`` (e.g. email and title keyed by ``id``), ``unique``, and catalogs.
 """
 
 from __future__ import annotations

@@ -2,18 +2,18 @@ users:
   rows: 10
   columns:
     id:
-      type: "$faker"
+      type: "faker"
       method: "uuid4"
       unique: true
     email:
-      type: "$faker"
+      type: "faker"
       method: "email"
       bind_to: id
     segment:
-      type: "$provider"
+      type: "provider"
       target: "UserSegmentProvider"
     welcome_line:
-      type: "$provider"
+      type: "provider"
       target: "WelcomeLineProvider"
   output:
     format: csv

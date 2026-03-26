@@ -66,9 +66,9 @@ def _load_callable(path: str) -> Callable[..., Any]:
 
 def _resolve_col_refs(params: dict[str, Any], row: dict[str, Any]) -> dict[str, Any]:
     """
-    Replace any "$col(name)" string values in params with the live value from
-    the current row. Called at generation time; the DAG guarantees referenced
-    columns are already resolved.
+    Replace any column reference string values in params (template {{ col("name") }})
+    with the live value from the current row.
+    Called at generation time; the DAG guarantees referenced columns are already resolved.
     """
     resolved: dict[str, Any] = {}
     for k, v in params.items():
@@ -78,7 +78,7 @@ def _resolve_col_refs(params: dict[str, Any], row: dict[str, Any]) -> dict[str, 
                 col_name = m.group(1)
                 if col_name not in row:
                     raise ValueError(
-                        f"$col('{col_name}') referenced in func params "
+                        f"{{ col('{col_name}') }} referenced in func params "
                         f"but '{col_name}' has not been generated yet"
                     )
                 resolved[k] = row[col_name]
@@ -94,7 +94,7 @@ def _call_with_supported_kwargs(
     row: dict[str, Any],
 ) -> Any:
     """
-    Resolve $col() references, then call func with the resolved params.
+    Resolve column reference templates, then call func with resolved params.
     Injects context and row into kwargs only if the function signature accepts them.
     """
     kwargs = _resolve_col_refs(params, row)

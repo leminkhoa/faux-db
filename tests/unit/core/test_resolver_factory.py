@@ -39,7 +39,7 @@ def _file_reader_provider() -> FileReaderProvider:
 def test_validate_file_reader_sample_column_must_be_loaded():
     reg = _registry(P=_file_reader_provider())
     columns = {
-        "x": ColumnConfig(type="$provider", target="P", mode="sample", column="missing"),
+        "x": ColumnConfig(type="provider", target="P", mode="sample", column="missing"),
     }
 
     with pytest.raises(ValueError, match="sample column 'missing'"):
@@ -50,12 +50,12 @@ def test_validate_file_reader_lookup_key_column_must_be_loaded():
     reg = _registry(P=_file_reader_provider())
     columns = {
         "x": ColumnConfig(
-            type="$provider",
+            type="provider",
             target="P",
             mode="lookup",
             lookup={
                 "key_columns": ["missing_key"],
-                "key_from": "$col(id)",
+                "key_from": "id",
                 "value_column": "value",
             },
         )
@@ -69,12 +69,12 @@ def test_validate_file_reader_lookup_value_column_must_be_loaded():
     reg = _registry(P=_file_reader_provider())
     columns = {
         "x": ColumnConfig(
-            type="$provider",
+            type="provider",
             target="P",
             mode="lookup",
             lookup={
                 "key_columns": ["id"],
-                "key_from": "$col(id)",
+                "key_from": "id",
                 "value_column": "missing_value",
             },
         )
@@ -87,7 +87,7 @@ def test_validate_file_reader_lookup_value_column_must_be_loaded():
 def test_validate_non_file_provider_rejects_column_option():
     reg = _registry(P=RandomChoiceProvider(["a"]))
     columns = {
-        "x": ColumnConfig(type="$provider", target="P", mode="sample", column="name"),
+        "x": ColumnConfig(type="provider", target="P", mode="sample", column="name"),
     }
 
     with pytest.raises(ValueError, match="'column' is only valid"):
@@ -98,7 +98,7 @@ def test_validate_non_file_provider_rejects_sample_option():
     reg = _registry(P=RandomChoiceProvider(["a"]))
     columns = {
         "x": ColumnConfig(
-            type="$provider",
+            type="provider",
             target="P",
             mode="sample",
             sample={"strategy": "random", "seed": 1},
@@ -119,9 +119,9 @@ def test_resolve_func_path_keeps_existing_prefix():
 
 def test_compute_effective_unique_inherits_from_bound_unique_column():
     columns = {
-        "id": ColumnConfig(type="$faker", method="uuid4", unique=True),
-        "name": ColumnConfig(type="$faker", method="name", bind_to="id"),
-        "note": ColumnConfig(type="$faker", method="word"),
+        "id": ColumnConfig(type="faker", method="uuid4", unique=True),
+        "name": ColumnConfig(type="faker", method="name", bind_to="id"),
+        "note": ColumnConfig(type="faker", method="word"),
     }
 
     effective = compute_effective_unique(columns)
@@ -132,10 +132,10 @@ def test_compute_effective_unique_inherits_from_bound_unique_column():
 def test_build_resolvers_constructs_all_supported_resolver_types(monkeypatch):
     registry = _registry(P=RandomChoiceProvider(["x", "y"]))
     columns = {
-        "id": ColumnConfig(type="$faker", method="uuid4", unique=True),
-        "country": ColumnConfig(type="$func", func="test.country_of_origin"),
-        "nickname": ColumnConfig(type="$provider", target="P"),
-        "ref_id": ColumnConfig(type="$rel", target="users.id", strategy="sequential"),
+        "id": ColumnConfig(type="faker", method="uuid4", unique=True),
+        "country": ColumnConfig(type="func", func="test.country_of_origin"),
+        "nickname": ColumnConfig(type="provider", target="P"),
+        "ref_id": ColumnConfig(type="rel", target="users.id", strategy="sequential"),
     }
     effective_unique = compute_effective_unique(columns)
     constructed: dict[str, tuple[tuple, dict]] = {}
@@ -170,8 +170,8 @@ def test_build_resolvers_constructs_all_supported_resolver_types(monkeypatch):
 def test_build_resolvers_assigns_pk_cache_key_for_effectively_unique_columns():
     registry = _registry(P=RandomChoiceProvider(["x"]))
     columns = {
-        "id": ColumnConfig(type="$faker", method="uuid4", unique=True),
-        "nickname": ColumnConfig(type="$provider", target="P", bind_to="id"),
+        "id": ColumnConfig(type="faker", method="uuid4", unique=True),
+        "nickname": ColumnConfig(type="provider", target="P", bind_to="id"),
     }
 
     resolvers = build_resolvers(
