@@ -2,41 +2,41 @@ transaction:
   rows: 30
   columns:
     id:
-      type: "$faker"
+      type: "faker"
       method: "uuid4"
       unique: true
     customer_id:
-      type: "$rel"
+      type: "rel"
       target: "customer.id"
       strategy: random
     store_id:
-      type: "$rel"
+      type: "rel"
       target: "store.id"
       strategy: random
     channel:
-      type: "$provider"
+      type: "provider"
       target: "TransactionChannelProvider"
     order_status:
-      type: "$provider"
+      type: "provider"
       target: "OrderStatusProvider"
     status_stamp:
-      type: "$provider"
+      type: "provider"
       target: "OrderStatusEchoProvider"
       bind_to: order_status
     carrier_hint:
-      type: "$provider"
+      type: "provider"
       target: "CarrierLookupProvider"
       mode: lookup
       lookup:
         key_columns: [order_status]
-        key_from: "$col(order_status)"
+        key_from: order_status
         value_column: carrier_hint
         on_missing: error
     receipt_line:
-      type: "$provider"
+      type: "provider"
       target: "TransactionReceiptProvider"
     created_at:
-      type: "$faker"
+      type: "faker"
       method: "date_between"
       params:
         start_date: "-1y"

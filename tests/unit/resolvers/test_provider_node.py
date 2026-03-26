@@ -68,7 +68,7 @@ def _fr(data: dict[str, list]) -> FileReaderProvider:
 
 
 def _sample_col(target: str, column: str, **extra) -> ColumnConfig:
-    return ColumnConfig(type="$provider", target=target, mode="sample", column=column, **extra)
+    return ColumnConfig(type="provider", target=target, mode="sample", column=column, **extra)
 
 
 def _lookup_col(
@@ -81,7 +81,7 @@ def _lookup_col(
     default_value=None,
 ) -> ColumnConfig:
     return ColumnConfig(
-        type="$provider",
+        type="provider",
         target=target,
         mode="lookup",
         lookup=LookupConfig(
@@ -100,13 +100,13 @@ def _lookup_col(
 
 class TestConstruction:
     def test_faker_type_raises(self):
-        col = ColumnConfig(type="$faker", method="name")
+        col = ColumnConfig(type="faker", method="name")
         with pytest.raises(ValueError, match="target"):
             ProviderResolver(_registry(), col)
 
     def test_provider_missing_target_rejected_by_schema(self):
         with pytest.raises(Exception):
-            ColumnConfig(type="$provider")  # schema rejects this
+            ColumnConfig(type="provider")  # schema rejects this
 
 
 # ---------------------------------------------------------------------------
@@ -172,7 +172,7 @@ class TestFileReaderLookup:
         col = _lookup_col(
             "PriceP",
             key_columns=["sku"],
-            key_from="$col(sku)",
+            key_from="sku",
             value_column="price",
             on_missing=on_missing,
             default_value=default_value,
@@ -220,7 +220,7 @@ class TestFileReaderCompositeKeyLookup:
         col = _lookup_col(
             "LabelP",
             key_columns=["category", "sku"],
-            key_from=["$col(cat)", "$col(sku)"],
+            key_from=["cat", "sku"],
             value_column="label",
         )
         return ProviderResolver(reg, col)

@@ -11,10 +11,10 @@ _load_callable
 - non-callable attribute raises FuncLoadError
 
 _resolve_col_refs
-- $col(name) is replaced with the live row value
+- {{ col(name) }} is replaced with the live row value
 - plain string values pass through unchanged
 - non-string values (int, bool) pass through unchanged
-- string partially containing $col() is NOT substituted (fullmatch required)
+- string partially containing {{ col() }} is NOT substituted (fullmatch required)
 - missing column in row raises ValueError
 
 _call_with_supported_kwargs
@@ -25,7 +25,7 @@ _call_with_supported_kwargs
 
 FuncResolver (end-to-end)
 - basic call with static params
-- $col() param resolved from current row
+- {{ col() }} param resolved from current row
 - module not found at construction time raises FuncLoadError
 - function that accepts context receives the live GenerationContext
 """
@@ -113,7 +113,7 @@ class TestLoadCallable:
 
 class TestResolveColRefs:
     def test_col_ref_replaced_with_row_value(self):
-        assert _resolve_col_refs({"k": "$col(user_id)"}, {"user_id": 42}) == {"k": 42}
+        assert _resolve_col_refs({"k": '{{ col("user_id") }}'}, {"user_id": 42}) == {"k": 42}
 
     def test_plain_string_passes_through(self):
         assert _resolve_col_refs({"k": "literal"}, {}) == {"k": "literal"}
@@ -122,17 +122,17 @@ class TestResolveColRefs:
         assert _resolve_col_refs({"n": 7, "flag": True}, {}) == {"n": 7, "flag": True}
 
     def test_partial_match_not_substituted(self):
-        # fullmatch means the entire value must be "$col(...)", not a substring
-        result = _resolve_col_refs({"k": "prefix $col(x)"}, {"x": "v"})
-        assert result == {"k": "prefix $col(x)"}
+        # fullmatch means the entire value must be a template, not a substring
+        result = _resolve_col_refs({"k": 'prefix {{ col("x") }}'}, {"x": "v"})
+        assert result == {"k": 'prefix {{ col("x") }}'}
 
     def test_missing_col_in_row_raises(self):
         with pytest.raises(ValueError, match="user_id"):
-            _resolve_col_refs({"k": "$col(user_id)"}, {})
+            _resolve_col_refs({"k": '{{ col("user_id") }}'}, {})
 
     def test_multiple_params_processed_independently(self):
         result = _resolve_col_refs(
-            {"a": "$col(x)", "b": "$col(y)", "c": "static"},
+            {"a": '{{ col("x") }}', "b": '{{ col("y") }}', "c": "static"},
             {"x": 1, "y": 2},
         )
         assert result == {"a": 1, "b": 2, "c": "static"}
@@ -209,7 +209,7 @@ class TestFuncResolver:
 
     def test_col_ref_param_resolved_from_row(self):
         _install(upper=lambda text: text.upper())
-        r = FuncResolver(f"{_FAKE_MOD}.upper", params={"text": "$col(raw)"})
+        r = FuncResolver(f"{_FAKE_MOD}.upper", params={"text": '{{ col("raw") }}'})
         assert r.resolve(_ctx(), {"raw": "hello"}) == "HELLO"
 
     def test_missing_module_raises_at_construction(self):

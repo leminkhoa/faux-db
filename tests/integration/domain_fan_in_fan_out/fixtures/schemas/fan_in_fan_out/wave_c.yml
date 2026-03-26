@@ -3,7 +3,7 @@ wave_c:
   rows: 2
   columns:
     id:
-      type: "$faker"
+      type: "faker"
       method: "uuid4"
   output:
     format: csv

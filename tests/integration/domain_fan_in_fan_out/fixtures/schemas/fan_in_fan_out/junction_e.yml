@@ -3,14 +3,14 @@ junction_e:
   rows: 2
   columns:
     id:
-      type: "$faker"
+      type: "faker"
       method: "uuid4"
     link_b:
-      type: "$rel"
+      type: "rel"
       target: "wave_b.id"
       strategy: "sequential"
     link_d:
-      type: "$rel"
+      type: "rel"
       target: "wave_d.id"
       strategy: "sequential"
   output:

@@ -12,7 +12,7 @@ from __future__ import annotations
 import random
 from typing import Any
 
-from ..parsers.schema import COL_REF_PATTERN, ColumnConfig, LookupConfig
+from ..parsers.schema import ColumnConfig, LookupConfig
 from ..providers.file_reader import FileReaderProvider
 from ..providers.file_reader_specs import FileReaderLookupSpec, FileReaderSampleSpec
 
@@ -21,12 +21,14 @@ def resolve_lookup_key_from_row(row: dict[str, Any], key_from: str | list[str]) 
     parts = [key_from] if isinstance(key_from, str) else key_from
     out: list[Any] = []
     for part in parts:
-        matches = COL_REF_PATTERN.findall(part)
-        if len(matches) != 1:
+        # lookup.key_from accepts bare column names (string or list of strings).
+        if not isinstance(part, str) or not part:
+            raise TypeError(f"lookup key_from part must be a non-empty string, got {part!r}")
+        if part not in row:
             raise ValueError(
-                f"lookup key_from part must reference exactly one $col(name), got {part!r}"
+                f"lookup key_from references '{part}' but it has not been generated yet"
             )
-        out.append(row.get(matches[0]))
+        out.append(row[part])
     return tuple(out)
 
 

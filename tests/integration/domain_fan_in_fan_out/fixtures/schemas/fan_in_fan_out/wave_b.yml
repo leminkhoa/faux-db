@@ -3,10 +3,10 @@ wave_b:
   rows: 2
   columns:
     id:
-      type: "$faker"
+      type: "faker"
       method: "uuid4"
     link_a:
-      type: "$rel"
+      type: "rel"
       target: "wave_a.id"
       strategy: "sequential"
   output:

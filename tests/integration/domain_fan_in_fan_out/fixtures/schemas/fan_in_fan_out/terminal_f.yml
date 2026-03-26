@@ -3,10 +3,10 @@ terminal_f:
   rows: 2
   columns:
     id:
-      type: "$faker"
+      type: "faker"
       method: "uuid4"
     link_e:
-      type: "$rel"
+      type: "rel"
       target: "junction_e.id"
       strategy: "sequential"
   output:

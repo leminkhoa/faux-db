@@ -2,7 +2,7 @@ customers:
   rows: 5
   columns:
     tier:
-      type: "$provider"
+      type: "provider"
       target: "CustomerTierProvider"
   output:
     format: csv

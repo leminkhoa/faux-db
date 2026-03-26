@@ -11,10 +11,10 @@ OUTPUTS_DIRNAME = "outputs"
 FUNCTIONS_DIRNAME = "functions"
 
 # Column generation type tokens
-COLUMN_GEN_TYPE__FAKER = "$faker"
-COLUMN_GEN_TYPE__PROVIDER = "$provider"
-COLUMN_GEN_TYPE__REL = "$rel"
-COLUMN_GEN_TYPE__FUNC = "$func"
+COLUMN_GEN_TYPE__FAKER = "faker"
+COLUMN_GEN_TYPE__PROVIDER = "provider"
+COLUMN_GEN_TYPE__REL = "rel"
+COLUMN_GEN_TYPE__FUNC = "func"
 
 ColumnGenType: TypeAlias = Literal[
     COLUMN_GEN_TYPE__FAKER,
