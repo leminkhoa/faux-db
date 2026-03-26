@@ -1,16 +1,18 @@
 # faux-db
 
-`faux-db` is a configuration-driven fake data generation toolkit.
+`faux-db` is a configuration-driven fake data generation library that leverages the power of `faker` to create realistic datasets based on YAML definitions. It's designed with a strong emphasis on separation of concerns, allowing for highly modular and reusable data generation components.
 
-## How it works
 
-`faux-db` builds datasets from YAML schemas (tables + columns), generating values using `faker` (via `type: faker`) and custom providers/functions.
-Generation is orchestrated by a dependency graph (DAG) so columns and tables are produced in the required order.
-Relational data is supported with `type: rel` (aka `$rel`): you can reference values from other generated tables (for example parent-child keys), with `strategy: random|sequential` controlling how related values are distributed.
+## Features
 
-For full guides, architecture, configuration references, and CLI documentation, visit:
+- Declarative: define your data schemas in simple, human-readable YAML.
+- Extensible: create custom data catalogs and provider logic for any domain.
+- Separation of Concerns: keep table schemas, generation logic, and custom data neatly organized.
+- Relationship Management: generate related rows across tables using `type: rel` (`$rel`) and column references.
 
-**https://leminkhoa.github.io/faux-db/**
+## Full Documentation
+
+See: https://leminkhoa.github.io/faux-db/
 
 ## Install
 
@@ -21,6 +23,7 @@ pip install faux-db
 ## Quickstart
 
 ```bash
+faux init
 faux schema generate schemas/products.yml
 ```
 
