@@ -95,7 +95,7 @@ class TableGenerator:
             column_order=column_order,
             resolvers=resolvers,
             fieldnames=list(columns_cfg.keys()),
-            sink=create_sink(table_cfg.output),
+            sink=create_sink(table_cfg.output, self._base_dir),
         )
 
     def execute(self, plan: TablePlan) -> List[Dict[str, Any]]:

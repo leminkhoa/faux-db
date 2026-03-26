@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kuriboh.example/schema/v1/providers.schema.json",
+  "title": "Kuriboh providers file (v1)",
+  "description": "Providers YAML is a mapping of providerName -> providerConfig. Provider configs are type-discriminated but provider-specific fields vary by provider type; this schema keeps validation intentionally loose while still offering key suggestions for common fields.",
+  "type": "object",
+  "additionalProperties": {
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "description": "Provider implementation type (e.g. random_choice, template_choice, file_reader, expression)."
+      },
+      "seed": { "type": "integer" }
+    },
+    "additionalProperties": true,
+    "required": ["type"]
+  }
+}
+

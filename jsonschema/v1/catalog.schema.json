@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kuriboh.example/schema/v1/catalog.schema.json",
+  "title": "Kuriboh catalog file (v1)",
+  "description": "Catalog YAML files are user-defined dictionaries. Kuriboh loads them as raw YAML mappings. This schema is intentionally permissive.",
+  "type": ["object", "array", "string", "number", "boolean", "null"]
+}
+

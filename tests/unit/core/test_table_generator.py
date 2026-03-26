@@ -120,7 +120,10 @@ def test_plan_builds_plan_and_preinits_resolvers(monkeypatch):
         "kuriboh.core.table_generator.build_resolvers",
         lambda table_name, columns, effective_unique, faker, registry: {"id": r1, "other": r2},
     )
-    monkeypatch.setattr("kuriboh.core.table_generator.create_sink", lambda output_cfg: sink)
+    monkeypatch.setattr(
+        "kuriboh.core.table_generator.create_sink",
+        lambda output_cfg, base_dir=None: sink,
+    )
 
     plan = gen.plan()
 
