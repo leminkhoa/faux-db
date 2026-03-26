@@ -23,9 +23,9 @@ import csv
 import re
 from pathlib import Path
 
-from kuriboh.core.dag import build_table_dag
-from kuriboh.parsers.loader import load_schema
-from kuriboh.parsers.schema import SchemaFile, validate_schema
+from faux.core.dag import build_table_dag
+from faux.parsers.loader import load_schema
+from faux.parsers.schema import SchemaFile, validate_schema
 
 EXPECTED_ROWS = 30
 

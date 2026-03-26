@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-from kuriboh.core.engine import run_domain
+from faux.core.engine import run_domain
 
 from tests.integration.scenario_helpers import clear_cached_functions_packages
 

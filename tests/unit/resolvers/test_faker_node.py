@@ -1,5 +1,5 @@
 """
-Tests for :mod:`kuriboh.resolvers.faker_node`.
+Tests for :mod:`faux.resolvers.faker_node`.
 
 Scenarios covered:
 - Basic method call returns a value
@@ -14,8 +14,8 @@ from __future__ import annotations
 import pytest
 from faker import Faker
 
-from kuriboh.core.context import GenerationContext
-from kuriboh.resolvers.faker_node import FakerResolver
+from faux.core.context import GenerationContext
+from faux.resolvers.faker_node import FakerResolver
 
 
 def _ctx() -> GenerationContext:

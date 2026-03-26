@@ -1,31 +1,31 @@
 # CLI Overview
 
-Kuriboh exposes one command-line entry point:
+faux-db exposes one command-line entry point:
 
 ```bash
-kuriboh
+faux
 ```
 
 ## Command groups
 
 | Command | Purpose |
 | --- | --- |
-| `kuriboh init` | Scaffold a starter project structure |
-| `kuriboh config validate` | Validate providers, catalogs, and schemas |
-| `kuriboh schema generate` | Generate data from a schema file or a domain directory |
+| `faux init` | Scaffold a starter project structure |
+| `faux config validate` | Validate providers, catalogs, and schemas |
+| `faux schema generate` | Generate data from a schema file or a domain directory |
 
 There is also a hidden backward-compatible alias:
 
 ```bash
-kuriboh generate <path>
+faux generate <path>
 ```
 
 ## Typical workflow
 
 ```bash
-kuriboh init demo-project
-kuriboh config validate demo-project
-kuriboh schema generate demo-project/schemas/example
+faux init demo-project
+faux config validate demo-project
+faux schema generate demo-project/schemas/example
 ```
 
 ## CLI pages

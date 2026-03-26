@@ -17,10 +17,10 @@ from __future__ import annotations
 import csv
 from pathlib import Path
 
-from kuriboh.core.dag import build_table_dag
-from kuriboh.core.engine import run_domain
-from kuriboh.parsers.loader import load_schema
-from kuriboh.parsers.schema import SchemaFile, validate_schema
+from faux.core.dag import build_table_dag
+from faux.core.engine import run_domain
+from faux.parsers.loader import load_schema
+from faux.parsers.schema import SchemaFile, validate_schema
 
 
 def _load_domain_schemas(domain_path: Path) -> dict[str, SchemaFile]:

@@ -5,10 +5,10 @@ from types import SimpleNamespace
 
 from faker import Faker
 
-from kuriboh.core.context import GenerationContext
-from kuriboh.core.table_generator import TableGenerator, TablePlan
-from kuriboh.parsers.schema import ColumnConfig, OutputConfig
-from kuriboh.sinks.base import BaseSink
+from faux.core.context import GenerationContext
+from faux.core.table_generator import TableGenerator, TablePlan
+from faux.parsers.schema import ColumnConfig, OutputConfig
+from faux.sinks.base import BaseSink
 
 
 class _RecordingSink(BaseSink):
@@ -106,22 +106,22 @@ def test_plan_builds_plan_and_preinits_resolvers(monkeypatch):
     r2 = _FakeResolver(unique=True, cardinality_value=10)
     sink = _RecordingSink()
 
-    monkeypatch.setattr("kuriboh.core.table_generator.load_schema", lambda path: {"raw": True})
-    monkeypatch.setattr("kuriboh.core.table_generator.validate_schema", lambda raw: schema_model)
-    monkeypatch.setattr("kuriboh.core.table_generator.load_providers", lambda base_dir: {"P": {}})
-    monkeypatch.setattr("kuriboh.core.table_generator.build_registry", lambda base_dir, providers: "registry")
+    monkeypatch.setattr("faux.core.table_generator.load_schema", lambda path: {"raw": True})
+    monkeypatch.setattr("faux.core.table_generator.validate_schema", lambda raw: schema_model)
+    monkeypatch.setattr("faux.core.table_generator.load_providers", lambda base_dir: {"P": {}})
+    monkeypatch.setattr("faux.core.table_generator.build_registry", lambda base_dir, providers: "registry")
     monkeypatch.setattr(
-        "kuriboh.core.table_generator.validate_provider_columns_for_plan",
+        "faux.core.table_generator.validate_provider_columns_for_plan",
         lambda registry, columns: None,
     )
-    monkeypatch.setattr("kuriboh.core.table_generator.build_dag", lambda columns: ["id"])
-    monkeypatch.setattr("kuriboh.core.table_generator.compute_effective_unique", lambda columns: {"id": False})
+    monkeypatch.setattr("faux.core.table_generator.build_dag", lambda columns: ["id"])
+    monkeypatch.setattr("faux.core.table_generator.compute_effective_unique", lambda columns: {"id": False})
     monkeypatch.setattr(
-        "kuriboh.core.table_generator.build_resolvers",
+        "faux.core.table_generator.build_resolvers",
         lambda table_name, columns, effective_unique, faker, registry: {"id": r1, "other": r2},
     )
     monkeypatch.setattr(
-        "kuriboh.core.table_generator.create_sink",
+        "faux.core.table_generator.create_sink",
         lambda output_cfg, base_dir=None: sink,
     )
 

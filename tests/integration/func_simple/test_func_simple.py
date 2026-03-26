@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import csv
 
-from kuriboh.core.engine import run_generation
+from faux.core.engine import run_generation
 
 from tests.integration.scenario_helpers import clear_cached_functions_packages
 

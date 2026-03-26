@@ -1,6 +1,6 @@
 # Configuration Cheatsheet
 
-Use this page as a quick lookup when writing Kuriboh configuration files.
+Use this page as a quick lookup when writing faux-db configuration files.
 
 ## Schema skeleton
 

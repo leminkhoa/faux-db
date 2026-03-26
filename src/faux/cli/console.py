@@ -24,7 +24,7 @@ def _render_paths_tree(title: str, paths: tuple[Path, ...], style: str) -> Tree:
 def print_init_summary(summary: InitSummary) -> None:
     console.print(
         Panel.fit(
-            f"[bold green]Initialized Kuriboh project[/bold green]\n[dim]{summary.base_dir}[/dim]",
+            f"[bold green]Initialized faux-db project[/bold green]\n[dim]{summary.base_dir}[/dim]",
             border_style="green",
         )
     )

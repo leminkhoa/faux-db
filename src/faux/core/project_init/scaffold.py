@@ -37,7 +37,7 @@ def _write_file(path: Path, content: str, *, force: bool) -> bool:
 
 
 def _load_template(relative_path: Path) -> str:
-    template_root = files("kuriboh.core.project_init").joinpath("templates")
+    template_root = files("faux.core.project_init").joinpath("templates")
     template_file = template_root.joinpath(*relative_path.parts)
     return template_file.read_text(encoding="utf-8")
 

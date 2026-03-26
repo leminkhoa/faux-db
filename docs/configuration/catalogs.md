@@ -14,7 +14,7 @@ catalogs/
     └── industries.yml
 ```
 
-Kuriboh discovers catalog files recursively.
+faux-db discovers catalog files recursively.
 
 ## How files are registered
 

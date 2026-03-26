@@ -1,10 +1,10 @@
-"""Tests for :mod:`kuriboh.providers.config` (Pydantic validation)."""
+"""Tests for :mod:`faux.providers.config` (Pydantic validation)."""
 
 from __future__ import annotations
 
 import pytest
 
-from kuriboh.providers.config import validate_provider_config
+from faux.providers.config import validate_provider_config
 
 
 def test_random_choice_valid():

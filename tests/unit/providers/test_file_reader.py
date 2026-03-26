@@ -1,4 +1,4 @@
-"""Tests for :class:`~kuriboh.providers.file_reader.FileReaderProvider`."""
+"""Tests for :class:`~faux.providers.file_reader.FileReaderProvider`."""
 
 from __future__ import annotations
 
@@ -6,8 +6,8 @@ import random
 
 import pytest
 
-from kuriboh.providers.file_reader import FileReaderProvider
-from kuriboh.providers.file_reader_specs import FileReaderLookupSpec, FileReaderSampleSpec
+from faux.providers.file_reader import FileReaderProvider
+from faux.providers.file_reader_specs import FileReaderLookupSpec, FileReaderSampleSpec
 
 
 def _lookup_ctx(

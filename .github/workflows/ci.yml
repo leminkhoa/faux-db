@@ -46,7 +46,7 @@ jobs:
 
       - name: Run tests with coverage gate
         if: matrix.python-version == '3.11'
-        run: uv run pytest --cov=kuriboh --cov-report=term-missing --cov-fail-under=90 tests
+        run: uv run pytest --cov=faux --cov-report=term-missing --cov-fail-under=90 tests
 
       - name: Run tests
         if: matrix.python-version != '3.11'
@@ -90,7 +90,7 @@ jobs:
   #     id-token: write
   #   environment:
   #     name: pypi
-  #     url: https://pypi.org/p/kuriboh-faker
+  #     url: https://pypi.org/p/faux-db
 
   #   steps:
   #     - name: Download distribution artifacts

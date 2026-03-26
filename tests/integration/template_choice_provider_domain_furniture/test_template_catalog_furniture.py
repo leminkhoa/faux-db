@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import csv
 
-from kuriboh.core.engine import run_generation
+from faux.core.engine import run_generation
 
 _EXPECTED_FIRST = "Red Platform Bed"
 

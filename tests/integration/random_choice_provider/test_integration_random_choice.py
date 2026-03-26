@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import csv
 
-from kuriboh.core.engine import run_generation
+from faux.core.engine import run_generation
 
 # Same sequence as ``RandomChoiceProvider(..., seed=42)`` for five draws.
 _EXPECTED_TIERS = ["standard", "standard", "platinum", "gold", "gold"]

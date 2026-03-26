@@ -1,10 +1,10 @@
-"""Tests for :class:`~kuriboh.providers.random_choice.RandomChoiceProvider`."""
+"""Tests for :class:`~faux.providers.random_choice.RandomChoiceProvider`."""
 
 from __future__ import annotations
 
 from typing import Any
 
-from kuriboh.providers.random_choice import RandomChoiceProvider
+from faux.providers.random_choice import RandomChoiceProvider
 
 
 def test_random_choice_seed_reproduces_first_value():

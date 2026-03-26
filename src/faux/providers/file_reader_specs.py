@@ -1,7 +1,7 @@
 """
 Typed spec dataclasses shared between
-:mod:`~kuriboh.providers.file_reader` and
-:mod:`~kuriboh.resolvers.file_reader_context`.
+:mod:`~faux.providers.file_reader` and
+:mod:`~faux.resolvers.file_reader_context`.
 
 Keeping specs here (in the ``providers`` package) avoids a circular
 import: ``FileReaderProvider`` can import from its own package, and

@@ -1,5 +1,5 @@
 """
-Central exception types for kuriboh.
+Central exception types for faux-db.
 
 Raising these (instead of generic ValueError/TypeError) lets callers handle
 specific cases (e.g. invalid $func config) and gives users clear, actionable messages.
@@ -8,12 +8,12 @@ specific cases (e.g. invalid $func config) and gives users clear, actionable mes
 from __future__ import annotations
 
 
-class KuribohError(Exception):
-    """Base exception for all kuriboh-specific errors."""
+class FauxError(Exception):
+    """Base exception for all faux-db specific errors."""
 
 
 
-class FuncLoadError(KuribohError):
+class FuncLoadError(FauxError):
     """
     Raised when a $func column references a function that cannot be loaded.
 

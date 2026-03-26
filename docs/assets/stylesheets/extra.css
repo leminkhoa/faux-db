@@ -1,14 +1,14 @@
 :root {
-  --kuriboh-hero-border: rgba(99, 102, 241, 0.18);
-  --kuriboh-hero-bg: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(245, 158, 11, 0.12));
+  --faux-hero-border: rgba(99, 102, 241, 0.18);
+  --faux-hero-bg: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(245, 158, 11, 0.12));
 }
 
 .hero {
   padding: 1.5rem;
   margin: 0 0 2rem;
-  border: 1px solid var(--kuriboh-hero-border);
+  border: 1px solid var(--faux-hero-border);
   border-radius: 1rem;
-  background: var(--kuriboh-hero-bg);
+  background: var(--faux-hero-bg);
 }
 
 .hero__eyebrow {

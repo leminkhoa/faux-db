@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import pytest
 
-from kuriboh.parsers.loader import load_schema, load_providers, load_catalogs
+from faux.parsers.loader import load_schema, load_providers, load_catalogs
 
 
 def test_load_schema_returns_table_with_rows_columns_output(tmp_path):

@@ -5,7 +5,7 @@ limited.
 
 ## Where they live
 
-Put modules under `functions/` in your Kuriboh project.
+Put modules under `functions/` in your faux-db project.
 
 ```text
 functions/
@@ -27,7 +27,7 @@ slug:
 
 ## Callable behavior
 
-Kuriboh imports the callable once when planning generation. At runtime it passes:
+faux-db imports the callable once when planning generation. At runtime it passes:
 
 - declared `params`
 - `context` if the function signature accepts `context`

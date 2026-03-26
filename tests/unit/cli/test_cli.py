@@ -4,8 +4,8 @@ from pathlib import Path
 
 from click.testing import CliRunner
 
-from kuriboh.cli import cli
-from kuriboh.core.validation import ValidationSummary, validate_project
+from faux.cli import cli
+from faux.core.validation import ValidationSummary, validate_project
 
 
 def test_schema_generate_file_dispatches_to_run_generation(monkeypatch, tmp_path):
@@ -15,11 +15,11 @@ def test_schema_generate_file_dispatches_to_run_generation(monkeypatch, tmp_path
     called = {}
 
     monkeypatch.setattr(
-        "kuriboh.cli.commands.common.run_generation",
+        "faux.cli.commands.common.run_generation",
         lambda path: called.setdefault("path", path),
     )
     monkeypatch.setattr(
-        "kuriboh.cli.commands.common.run_domain",
+        "faux.cli.commands.common.run_domain",
         lambda path: called.setdefault("unexpected", path),
     )
 
@@ -36,11 +36,11 @@ def test_schema_generate_directory_dispatches_to_run_domain(monkeypatch, tmp_pat
     called = {}
 
     monkeypatch.setattr(
-        "kuriboh.cli.commands.common.run_generation",
+        "faux.cli.commands.common.run_generation",
         lambda path: called.setdefault("unexpected", path),
     )
     monkeypatch.setattr(
-        "kuriboh.cli.commands.common.run_domain",
+        "faux.cli.commands.common.run_domain",
         lambda path: called.setdefault("path", path),
     )
 
@@ -57,11 +57,11 @@ def test_generate_alias_dispatches_to_run_generation(monkeypatch, tmp_path):
     called = {}
 
     monkeypatch.setattr(
-        "kuriboh.cli.commands.common.run_generation",
+        "faux.cli.commands.common.run_generation",
         lambda path: called.setdefault("path", path),
     )
     monkeypatch.setattr(
-        "kuriboh.cli.commands.common.run_domain",
+        "faux.cli.commands.common.run_domain",
         lambda path: called.setdefault("unexpected", path),
     )
 
@@ -95,7 +95,7 @@ def test_config_validate_dispatches_to_project_validation(monkeypatch, tmp_path)
             catalog_count=4,
         )
 
-    monkeypatch.setattr("kuriboh.cli.commands.config.validate_project", fake_validate_project)
+    monkeypatch.setattr("faux.cli.commands.config.validate_project", fake_validate_project)
 
     result = runner.invoke(cli, ["config", "validate", str(tmp_path)])
 
@@ -121,7 +121,7 @@ def test_init_creates_starter_project(tmp_path):
     assert (tmp_path / "schemas" / "example" / "users.yml").exists()
     assert (tmp_path / "providers" / "example.yml").exists()
     assert (tmp_path / "catalogs" / "demo.yml").exists()
-    assert "Initialized Kuriboh project" in result.output
+    assert "Initialized faux-db project" in result.output
 
 
 def test_init_starter_project_is_valid(tmp_path):
@@ -146,8 +146,8 @@ def test_root_help_includes_common_patterns():
 
     assert result.exit_code == 0, result.output
     assert "Common patterns:" in result.output
-    assert "kuriboh init" in result.output
-    assert "kuriboh schema generate schemas/example/users.yml" in result.output
+    assert "faux init" in result.output
+    assert "faux schema generate schemas/example/users.yml" in result.output
 
 
 def test_config_help_includes_detailed_guides():
@@ -157,10 +157,10 @@ def test_config_help_includes_detailed_guides():
 
     assert result.exit_code == 0, result.output
     assert "Validation includes:" in result.output
-    assert "kuriboh config validate ./demo-project" in result.output
+    assert "faux config validate ./demo-project" in result.output
     assert "Examples:" in result.output
-    assert "kuriboh config validate\n" in result.output or "kuriboh config validate" in result.output
-    assert "kuriboh config validate ./demo-project" in result.output
+    assert "faux config validate\n" in result.output or "faux config validate" in result.output
+    assert "faux config validate ./demo-project" in result.output
 
 
 def test_schema_generate_help_includes_examples():
@@ -170,4 +170,4 @@ def test_schema_generate_help_includes_examples():
 
     assert result.exit_code == 0, result.output
     assert "Examples:" in result.output
-    assert "kuriboh schema generate schemas/example" in result.output
+    assert "faux schema generate schemas/example" in result.output

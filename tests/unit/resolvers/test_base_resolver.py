@@ -1,5 +1,5 @@
 """
-Tests for :mod:`kuriboh.resolvers.base`.
+Tests for :mod:`faux.resolvers.base`.
 
 Scenarios covered:
 - Plain resolve (no bind_to, no unique) forwards to _generate()
@@ -17,8 +17,8 @@ from __future__ import annotations
 import pytest
 from faker import Faker
 
-from kuriboh.core.context import GenerationContext
-from kuriboh.resolvers.base import BaseResolver
+from faux.core.context import GenerationContext
+from faux.resolvers.base import BaseResolver
 
 
 # ---------------------------------------------------------------------------

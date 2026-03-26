@@ -1,18 +1,18 @@
 # Getting Started
 
-Kuriboh projects follow a small set of conventions so the CLI can discover
+faux-db projects follow a small set of conventions so the CLI can discover
 providers, catalogs, schemas, custom functions, and output files without extra
 configuration.
 
 ## Typical workflow
 
-1. Install the package and confirm the `kuriboh` CLI is available.
-2. Run `kuriboh init` to scaffold a starter project.
+1. Install the package and confirm the `faux` CLI is available.
+2. Run `faux init` to scaffold a starter project.
 3. Edit files in `schemas/`, `providers/`, and `catalogs/`.
-4. Validate everything with `kuriboh config validate`.
+4. Validate everything with `faux config validate`.
 5. Generate one schema file or a full domain directory.
 
-## What `kuriboh init` creates
+## What `faux init` creates
 
 The starter structure includes:
 

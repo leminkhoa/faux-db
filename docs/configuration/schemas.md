@@ -115,7 +115,7 @@ Options:
 | `unique` | Unique output when the resolver can support it | Generated slugs or synthetic keys |
 | `bind_to` | Cache values by another column | Stable per-entity outputs |
 
-If the callable accepts `context` or `row`, Kuriboh injects them automatically.
+If the callable accepts `context` or `row`, faux-db injects them automatically.
 
 ## Column references
 

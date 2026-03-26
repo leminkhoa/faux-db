@@ -1,4 +1,4 @@
-# Kuriboh Faker
+# faux-db
 
 <div class="hero" markdown>
   <p class="hero__eyebrow">Configuration-first synthetic data generation</p>
@@ -12,9 +12,9 @@
   </p>
 </div>
 
-Kuriboh is designed for teams that want fake or sample data without hard-coding
+faux-db is designed for teams that want fake or sample data without hard-coding
 generation logic into ad hoc scripts. You describe tables, columns, and outputs
-in YAML; Kuriboh handles validation, ordering, provider lookup, and file writing.
+in YAML; faux-db handles validation, ordering, provider lookup, and file writing.
 
 <div class="grid cards" markdown>
 
@@ -48,10 +48,10 @@ in YAML; Kuriboh handles validation, ordering, provider lookup, and file writing
 
 ## How it works
 
-1. Create or scaffold a project with `kuriboh init`.
+1. Create or scaffold a project with `faux init`.
 2. Define providers, catalogs, and schemas under the standard project folders.
-3. Run `kuriboh config validate` to catch configuration issues early.
-4. Generate a single schema or an entire domain with `kuriboh schema generate`.
+3. Run `faux config validate` to catch configuration issues early.
+4. Generate a single schema or an entire domain with `faux schema generate`.
 
 ## Component map
 

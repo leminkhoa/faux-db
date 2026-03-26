@@ -1,4 +1,4 @@
 .PHONY: run-tests
 
 run-tests:
-	uv run pytest --cov=kuriboh --cov-report=term-missing tests
+	uv run pytest --cov=faux --cov-report=term-missing tests

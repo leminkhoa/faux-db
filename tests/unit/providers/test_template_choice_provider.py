@@ -1,4 +1,4 @@
-"""Tests for :class:`~kuriboh.providers.template_choice.TemplateChoiceProvider`."""
+"""Tests for :class:`~faux.providers.template_choice.TemplateChoiceProvider`."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from typing import Any
 
 import pytest
 
-from kuriboh.providers.template_choice import TemplateChoiceProvider
+from faux.providers.template_choice import TemplateChoiceProvider
 
 
 # Minimal catalogs: stem "demo" with nested lists for path demo.a / demo.b

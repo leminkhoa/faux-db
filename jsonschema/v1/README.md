@@ -1,6 +1,6 @@
-## Kuriboh Faker JSON Schemas (v1)
+## faux-db JSON Schemas (v1)
 
-This folder contains JSON Schema files that provide IDE autocomplete and validation for Kuriboh YAML configuration files.
+This folder contains JSON Schema files that provide IDE autocomplete and validation for faux-db YAML configuration files.
 
 ### What this covers
 
@@ -38,5 +38,5 @@ Install the "YAML" extension (Red Hat), then add a workspace mapping in `.vscode
 ```
 
 Notes:
-- These schemas validate **structure**, but cannot fully validate cross-file or cross-field semantics (e.g. `$rel` target table existence, `key_from` referencing a real column). The Kuriboh runtime validator still handles those.
+- These schemas validate **structure**, but cannot fully validate cross-file or cross-field semantics (e.g. `$rel` target table existence, `key_from` referencing a real column). The faux-db runtime validator still handles those.
 

@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from kuriboh.core.context import GenerationContext
+from faux.core.context import GenerationContext
 
 
 def format_price_display(cents: int) -> str:

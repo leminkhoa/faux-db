@@ -1,11 +1,11 @@
 # Quickstart
 
-This walkthrough uses the built-in starter template created by `kuriboh init`.
+This walkthrough uses the built-in starter template created by `faux init`.
 
 ## 1. Scaffold a project
 
 ```bash
-kuriboh init demo-project
+faux init demo-project
 ```
 
 This creates a minimal working layout with:
@@ -18,7 +18,7 @@ This creates a minimal working layout with:
 ## 2. Validate the project
 
 ```bash
-kuriboh config validate demo-project
+faux config validate demo-project
 ```
 
 Validation checks provider configuration, catalog loading, schema parsing, and
@@ -27,10 +27,10 @@ domain dependency rules before any data is generated.
 ## 3. Generate the example domain
 
 ```bash
-kuriboh schema generate demo-project/schemas/example
+faux schema generate demo-project/schemas/example
 ```
 
-Because the argument is a directory, Kuriboh generates every schema file in that
+Because the argument is a directory, faux-db generates every schema file in that
 domain in dependency order.
 
 ## 4. Inspect the output
