@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 from ..parsers.loader import load_providers, load_schema
 from ..parsers.schema import validate_schema
@@ -31,17 +31,17 @@ class TablePlan:
 
     table_name: str
     rows_count: int
-    column_order: List[str]
-    resolvers: Dict[str, BaseResolver]
-    fieldnames: List[str]
+    column_order: list[str]
+    resolvers: dict[str, BaseResolver]
+    fieldnames: list[str]
     sink: BaseSink
 
 
 class TableGenerator:
     """
-    Orchestrates single-table generation in two explicit phases:
+    Orchestrates single-table generation in two explicit phases.
 
-    1. plan()   — load schema, build DAG + resolvers, apply guards.
+    1. plan() — load schema, build DAG + resolvers, apply guards.
                   Pure setup: raises early on any config error, writes nothing.
     2. execute() — run the generation loop and flush rows to the sink.
     """
@@ -98,17 +98,17 @@ class TableGenerator:
             sink=create_sink(table_cfg.output, self._base_dir),
         )
 
-    def execute(self, plan: TablePlan) -> List[Dict[str, Any]]:
+    def execute(self, plan: TablePlan) -> list[dict[str, Any]]:
         """
         Run the generation loop and write all rows to the configured sink.
 
         The generated rows are also stored in context.generated_tables so
         subsequent tables can reference them via $rel columns.
         """
-        generated_rows: List[Dict[str, Any]] = []
+        generated_rows: list[dict[str, Any]] = []
 
         for _ in range(plan.rows_count):
-            row: Dict[str, Any] = {}
+            row: dict[str, Any] = {}
             for col_name in plan.column_order:
                 row[col_name] = plan.resolvers[col_name].resolve(self._context, row)
             generated_rows.append(row)
@@ -122,7 +122,7 @@ class TableGenerator:
         self,
         table_name: str,
         rows_count: int,
-        resolvers: Dict[str, BaseResolver],
+        resolvers: dict[str, BaseResolver],
     ) -> int:
         """
         Cap rows_count to the smallest cardinality among all unique columns.

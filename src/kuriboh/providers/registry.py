@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Callable
-from enum import Enum
+from typing import Any
+from collections.abc import Callable
+from enum import StrEnum
 
 import polars as pl
 
@@ -15,7 +16,7 @@ from .random_choice import RandomChoiceProvider
 from .template_choice import TemplateChoiceProvider
 
 
-class ProviderType(str, Enum):
+class ProviderType(StrEnum):
     RANDOM_CHOICE = "random_choice"
     FILE_READER = "file_reader"
     TEMPLATE_CHOICE = "template_choice"

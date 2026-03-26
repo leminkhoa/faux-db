@@ -32,7 +32,7 @@ class BaseResolver(ABC):
         self._unique = unique
         self._pk_cache_key = pk_cache_key or cache_key
 
-    def resolve(self, context: "GenerationContext", row: dict[str, Any]) -> Any:
+    def resolve(self, context: GenerationContext, row: dict[str, Any]) -> Any:
         if self._unique and self._pk_cache_key:
             return self._resolve_pk(context, row)
 
@@ -46,7 +46,7 @@ class BaseResolver(ABC):
 
         return self._generate(context, row)
 
-    def pre_init_pool(self, context: "GenerationContext") -> None:
+    def pre_init_pool(self, context: GenerationContext) -> None:
         """
         Eagerly initialize the value pool before generation starts.
         Bounded providers get a shuffled list; unbounded are marked with _UNBOUNDED.
@@ -64,7 +64,7 @@ class BaseResolver(ABC):
         else:
             context.pk_pool[key] = _UNBOUNDED  # type: ignore[assignment]
 
-    def _resolve_pk(self, context: "GenerationContext", row: dict[str, Any]) -> Any:
+    def _resolve_pk(self, context: GenerationContext, row: dict[str, Any]) -> Any:
         key = self._pk_cache_key
         assert key is not None
 
@@ -102,6 +102,6 @@ class BaseResolver(ABC):
         return None
 
     @abstractmethod
-    def _generate(self, context: "GenerationContext", row: dict[str, Any]) -> Any:
+    def _generate(self, context: GenerationContext, row: dict[str, Any]) -> Any:
         """Produce a new value, called only when no cached value is available."""
         ...

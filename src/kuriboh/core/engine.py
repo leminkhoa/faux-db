@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Dict, List
 
 from faker import Faker
 
@@ -34,8 +33,8 @@ def run_domain(domain_path: Path) -> None:
         raise ValueError(f"No .yml schema files found in {domain_path}")
 
     base_dir = domain_path.parent.parent
-    schemas: Dict[str, SchemaFile] = {}
-    table_to_path: Dict[str, Path] = {}
+    schemas: dict[str, SchemaFile] = {}
+    table_to_path: dict[str, Path] = {}
 
     for f in schema_files:
         raw = load_schema(f)
@@ -46,7 +45,7 @@ def run_domain(domain_path: Path) -> None:
         schemas[table_name] = schema
         table_to_path[table_name] = f
 
-    table_order: List[str] = build_table_dag(schemas)
+    table_order: list[str] = build_table_dag(schemas)
 
     catalogs = load_catalogs(base_dir)
     context = GenerationContext(faker=Faker(), catalogs=catalogs)

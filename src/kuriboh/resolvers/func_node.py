@@ -3,7 +3,8 @@ from __future__ import annotations
 import difflib
 import inspect
 from importlib import import_module
-from typing import Any, Callable, Dict
+from typing import Any
+from collections.abc import Callable
 
 from ..core.context import GenerationContext
 from ..core.exceptions import FuncLoadError
@@ -41,7 +42,7 @@ def _load_callable(path: str) -> Callable[..., Any]:
         raise FuncLoadError(
             f"Function '{path}' could not be loaded: module '{module_name}' does not exist.",
             path,
-            suggestion=f"Check that the module path is correct (e.g. 'test.country_of_origin' for the 'test' module in the functions package).",
+            suggestion="Check that the module path is correct (e.g. 'test.country_of_origin' for the 'test' module in the functions package).",
         ) from e
 
     try:
@@ -137,7 +138,7 @@ class FuncResolver(BaseResolver):
         self._params = params or {}
         self._func = _load_callable(func_path)
 
-    def _generate(self, context: GenerationContext, row: Dict[str, Any]) -> Any:
+    def _generate(self, context: GenerationContext, row: dict[str, Any]) -> Any:
         return _call_with_supported_kwargs(
             self._func, self._params, context, row
         )

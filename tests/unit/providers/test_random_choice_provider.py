@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any
 
 from kuriboh.providers.random_choice import RandomChoiceProvider
 
@@ -22,7 +22,7 @@ def test_random_choice_unweighted_generate_deterministic():
 def test_random_choice_generate_accepts_context():
     """``context`` is unused but accepted for API compatibility."""
     p = RandomChoiceProvider(["x", "y"], seed=0)
-    ctx: Dict[str, Any] = {"catalogs": {}, "extra": 1}
+    ctx: dict[str, Any] = {"catalogs": {}, "extra": 1}
     assert p.generate(ctx) in ("x", "y")
 
 
@@ -42,7 +42,7 @@ def test_random_choice_cardinality_counts_unique_string_forms():
 
 
 def test_random_choice_cardinality_collapses_same_str():
-    """``1`` and ``\"1\"`` share ``str(c) == \"1\"``, so cardinality is 1."""
+    r"""``1`` and ``\"1\"`` share ``str(c) == \"1\"``, so cardinality is 1."""
     p = RandomChoiceProvider([1, "1"])
     assert p.cardinality({}) == 1
 

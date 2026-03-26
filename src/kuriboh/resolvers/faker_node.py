@@ -31,6 +31,6 @@ class FakerResolver(BaseResolver):
         self._method = method
         self._params = params or {}
 
-    def _generate(self, context: "GenerationContext", row: dict[str, Any]) -> Any:
+    def _generate(self, context: GenerationContext, row: dict[str, Any]) -> Any:
         func = getattr(self._faker, self._method)
         return func(**self._params)
