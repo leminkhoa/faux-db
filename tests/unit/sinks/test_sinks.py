@@ -67,6 +67,14 @@ def test_create_sink_builds_csv_sink():
     assert isinstance(sink, CsvSink)
 
 
+def test_create_sink_resolves_relative_path_against_base_dir(tmp_path):
+    base = tmp_path / "project"
+    base.mkdir()
+    sink = create_sink(OutputConfig(format="csv", filepath="./outputs/users.csv"), base_dir=base)
+    assert isinstance(sink, CsvSink)
+    assert sink._output_path == (base / "outputs" / "users.csv").resolve()
+
+
 def test_create_sink_builds_json_sink():
     sink = create_sink(OutputConfig(format="json", filepath="./out.json"))
     assert isinstance(sink, JsonSink)
